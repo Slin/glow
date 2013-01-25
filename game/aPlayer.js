@@ -22,21 +22,38 @@
 //	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
-
-
 function aPlayer()
 {
+    this.SpeedFactor = 0.02;
+
 	this.ent = 0;
-	this.time = 0;
+    this.deltaTime = 0;
 }
 
-/*aPlayer.prototype.onInit = function()
+// timeStamp: Elapsed time scince last render call in millisecons.
+aPlayer.prototype.onUpdate = function(timeStamp)
 {
-	this.ent.object.moveToFront();
-}*/
+    this.deltaTime += timeStamp;
 
-aPlayer.prototype.onUpdate = function(ts)
-{
-	this.time += ts;
-	this.ent.object.pos.y = Math.sin(this.time*0.01)*10.0;
+    this.updateInput(timeStamp);
 };
+
+aPlayer.prototype.updateInput = function(timeStamp)
+{
+    if (wgKeyboard.left)
+    {
+       this.ent.object.pos.x -= timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.right)
+    {
+       this.ent.object.pos.x += timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.down)
+    {
+       this.ent.object.pos.y -= timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.up)
+    {
+       this.ent.object.pos.y += timeStamp * this.SpeedFactor;
+    }
+}
