@@ -64,14 +64,17 @@ function toggleSound()
 
 function gameevent(ts)
 {
-	
+
 }
 
 function main()
 {
 	wgMain.initWebgine(gameevent);
 
-	wgMain.first_ent.addEntity("game/stage_1_basic.png", 0);
+	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
+	wgMain.first_ent.addEntity("game/player.png", new aPlayer());
+	wgMain.first_ent.addEntity("game/player2.png", 0);
+	wgMain.first_ent.next.object.pos.x = 256;
 	
 //	wgAudio.playAudio("song1", 1);
 
