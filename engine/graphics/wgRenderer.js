@@ -26,6 +26,7 @@
 var wgRenderer = new function()
 {
     this.first_obj = new wgObject();
+    this.first_light = new wgLight();
 	this.texture = 0;
 	this.shader = 0;
 
