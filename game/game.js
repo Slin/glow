@@ -74,6 +74,7 @@ function main()
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
 	wgMain.first_ent.addEntity("game/player.png", new aPlayer());
 	wgMain.first_ent.addEntity("game/player2.png", 0);
+	wgMain.
 	wgMain.first_ent.next.object.pos.x = 256;
 	
 //	wgAudio.playAudio("song1", 1);

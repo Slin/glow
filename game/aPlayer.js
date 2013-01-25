@@ -23,17 +23,11 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-var PL_LAUFSPEED = 0.4;
-var PL_GRAVITY = 0.004;
-var PL_JUMPFORCE = 1.1;
-var PL_ICEACCELERATION = 0.002;
-var PL_BUMPERFORCE = 2.0;
-var PL_ENEMYJUMPFORCE = 1.0;
-
 
 function aPlayer()
 {
 	this.ent = 0;
+	this.time = 0;
 }
 
 /*aPlayer.prototype.onInit = function()
@@ -43,5 +37,6 @@ function aPlayer()
 
 aPlayer.prototype.onUpdate = function(ts)
 {
-	
+	this.time += ts;
+	this.ent.object.pos.y = Math.sin(this.time*0.01)*10.0;
 };

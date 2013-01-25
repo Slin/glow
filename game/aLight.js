@@ -1,8 +1,8 @@
 //
-//	wgEntity.js
+//	player.js
 //	Webgine
 //
-//	Created by Nils Daumann on 03.11.11.
+//	Created by Nils Daumann on 06.11.11.
 //	Copyright (c) 2011 Nils Daumann
 
 //	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,62 +23,19 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-function wgAction()
+
+function aLight()
 {
-	this.onUpdate = 0;
+	this.ent = 0;
+	this.time = 0;
 }
 
-function wgEntity()
+/*aLight.prototype.onInit = function()
 {
-	this.action = 0;
-	this.object = 0;
-	this.light = 0;
-	
-	this.group = 0;
-	
-	this.next = 0;
-	this.prev = 0;
-}
+	this.ent.object.moveToFront();
+}*/
 
-wgEntity.prototype.addEntity = function(texfile, act, mode)
+aLight.prototype.onUpdate = function(ts)
 {
-	var temp = new wgEntity();
-    temp.next = this.next;
-    temp.next.prev = temp;
-	temp.prev = this;
-    this.next = temp;
 	
-	temp.object = wgRenderer.first_obj.addObject(texfile, mode);
-	temp.action = act;
-	temp.action.ent = temp;
-	if(temp.action && temp.action.onInit)
-	{
-		temp.action.onInit();
-	}
-	return temp;
-};
-
-wgEntity.prototype.addLight = function(act, mode)
-{
-	var temp = new wgEntity();
-    temp.next = this.next;
-    temp.next.prev = temp;
-	temp.prev = this;
-    this.next = temp;
-	
-	temp.object = wgRenderer.first_obj.addObject(texfile,mode);
-	temp.action = act;
-	temp.action.ent = temp;
-	if(temp.action && temp.action.onInit)
-	{
-		temp.action.onInit();
-	}
-	return temp;
-};
-
-wgEntity.prototype.destroy = function() 
-{
-	this.object.destroy();
-	this.prev.next = this.next; 
-	this.next.prev = this.prev;
 };

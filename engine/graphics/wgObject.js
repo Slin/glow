@@ -57,7 +57,7 @@ wgObject.prototype.moveToBack = function()
 	wgRenderer.first_obj.next = this;
 };
 
-wgObject.prototype.addObject = function(texfile,mode)
+wgObject.prototype.addObject = function(texfile, mode)
 {
     var temp = new wgObject;
     temp.next = this.next;
@@ -66,7 +66,7 @@ wgObject.prototype.addObject = function(texfile,mode)
     this.next.prev = this;
 	
 	temp.material = new wgMaterial();
-	temp.material.texture = wgTexture.getTexture(texfile,mode);
+	temp.material.texture = wgTexture.getTexture(texfile, mode);
 	temp.material.shader = wgShader.getShader();
 	temp.mesh = wgMesh.getMesh();
 	
