@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Exploring the female body</title>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" class="full" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; z-index: 0;"></canvas>
+                        
+
+        <script id="VS_BASE" type="text/x-vertex">
+            #ifdef GL_ES
+            precision highp float;
+            #endif
+
+            uniform mat4 u_mvp;
+            uniform mat3 u_model;
+
+            attribute vec3 a_position;
+            attribute vec2 a_texcoord;
+            attribute vec3 a_normal;
+
+            varying vec2 v_texcoord;
+            varying vec3 v_normal;
+
+            void main(void)
+            {
+               v_texcoord = a_texcoord;
+               v_normal = u_model * a_normal;
+               gl_Position = u_mvp * vec4(a_position, 1.0);
+            }
+        </script>
+
+        <script id="FS_BASE" type="text/x-fragment">
+            #ifdef GL_ES
+            precision mediump float;
+            #endif
+
+            uniform mat3 u_model;
+            uniform vec4 u_color;
+            uniform vec2 u_material;
+            uniform sampler2D u_diffuse_sampler;
+            //uniform sampler2D u_normal_sampler;
+
+            varying vec2 v_texcoord;
+            varying vec3 v_normal;
+
+            void main(void) {
+                // Simple, soft directional lighting.
+                vec4 fetch = texture2D(u_diffuse_sampler, v_texcoord);
+                fetch.rgb = pow(fetch.rgb, vec3(2.2));
+            //    vec3 norm = texture2D(u_normal_sampler, v_texcoord).rgb;
+            //    vec3 normal = normalize(u_model*(norm*2.0-1.0));
+                vec3 normal = normalize(v_normal);
+                vec3 light_vec = normalize(vec3(-0.25, -0.25, 1.0));
+                vec3 halfvec = (light_vec+vec3(0.0, 0.0, 1.0))/2.0;
+                float spec = dot(halfvec, normal);
+                spec = pow(max(spec, 0.0), u_material.y);
+                float light = max(dot(normal, light_vec), 0.0);
+                gl_FragData[0] = vec4(vec3(light*light)*fetch.rgb+vec3(spec*u_material.x), u_color.a*fetch.a);
+                gl_FragData[0].rgb = pow(gl_FragData[0].rgb, vec3(1.0/2.2));
+            }
+        </script>
+
+        <script type="text/javascript" src="gl-matrix-min.js"></script>
+        <script type="text/javascript" src="knockout-2.2.0.js"></script>
+        <script type="text/javascript" src="webgl-utils.js"></script>
+    </body>
+</html>
