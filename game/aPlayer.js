@@ -33,15 +33,36 @@ var PL_ENEMYJUMPFORCE = 1.0;
 
 function aPlayer()
 {
+    this.SpeedFactor = 0.02;
+
 	this.ent = 0;
+    this.deltaTime = 0;
 }
 
-/*aPlayer.prototype.onInit = function()
+// timeStamp: Elapsed time scince last render call in millisecons.
+aPlayer.prototype.onUpdate = function(timeStamp)
 {
-	this.ent.object.moveToFront();
-}*/
+    this.deltaTime += timeStamp;
 
-aPlayer.prototype.onUpdate = function(ts)
-{
-	
+    this.updateInput(timeStamp);
 };
+
+aPlayer.prototype.updateInput = function(timeStamp)
+{
+    if (wgKeyboard.left)
+    {
+       this.ent.object.pos.x -= timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.right)
+    {
+       this.ent.object.pos.x += timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.down)
+    {
+       this.ent.object.pos.y -= timeStamp * this.SpeedFactor;
+    }
+    if (wgKeyboard.up)
+    {
+       this.ent.object.pos.y += timeStamp * this.SpeedFactor;
+    }
+}
