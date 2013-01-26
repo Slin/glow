@@ -89,7 +89,7 @@ var wgShader = new function()
 				wgResource.addResource("shader_base", id);
 			}
 
-			return wgResource.getResource("shader_base");
+			return wgResource.getResource("shader_base").texture;
 		}
 		else
 		{
@@ -155,7 +155,7 @@ var wgShader = new function()
 				wgResource.addResource("shader_light", id);
 			}
 
-			return wgResource.getResource("shader_light");
+			return wgResource.getResource("shader_light").texture;
 		}
     };
 };

@@ -73,20 +73,17 @@ function gameevent(ts)
 }
 
 
-function main()
+function loadLevel1()
 {
-	wgMain.initWebgine(gameevent);
-
-
-	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
+	wgMain.first_ent.addEntity("game/textures/stage_1_basic.png", new aLevel());
 	gGlobals.background = wgMain.first_ent.next;
     
     // The player entity.
-    wgMain.first_ent.addEntity("game/player3_transparent.png", new aPlayer());
+    wgMain.first_ent.addEntity("game/textures/player3_transparent.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
 
 
-	var light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 832, y: 532}));
+	var light = wgMain.first_ent.addEntity("game/textures/player2.png", new aLight({x: 832, y: 532}));
 	light.object.pos.x = 800;
 	light.object.pos.y = 500;
 
@@ -108,6 +105,24 @@ function main()
 
 
 	wgMain.first_ent.addEntity("game/player2.png", new aLevel(), "light");
+}
+
+function destroyLevel()
+{
+	while(wgMain.first_ent.next!=0)
+	{
+		wgMain.first_ent.next.destroy();
+	}
+	wgMain.first_ent = new wgEntity();
+}
+
+
+function main()
+{
+	wgMain.initWebgine(gameevent);
+
+
+	loadLevel1();
     
 	
 //	wgAudio.playAudio("song1", 1);

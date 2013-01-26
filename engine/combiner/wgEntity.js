@@ -83,7 +83,10 @@ wgEntity.prototype.createLight = function()
 
 wgEntity.prototype.destroy = function() 
 {
-	this.object.destroy();
+	if(this.object != 0)
+		this.object.destroy();
+	if(this.light != 0)
+		this.light.destroy();
 	this.prev.next = this.next; 
 	this.next.prev = this.prev;
 };

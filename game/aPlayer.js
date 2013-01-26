@@ -62,13 +62,13 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 
     if(this.ent.object.material.inverttexx == 1)
     {
-        this.ent.light.pos.x = this.ent.object.pos.x+90;//this.ent.object.size.x*0.5;
+        this.ent.light.pos.x = this.ent.object.pos.x+120;
     }
     else
     {
-        this.ent.light.pos.x = this.ent.object.pos.x+38;//this.ent.object.size.x*0.5;
+        this.ent.light.pos.x = this.ent.object.pos.x+8;
     }
-    this.ent.light.pos.y = this.ent.object.pos.y+45;
+    this.ent.light.pos.y = this.ent.object.pos.y+30;
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
     

@@ -55,8 +55,9 @@ aLight.prototype.onUpdate = function(ts)
 		var distx = this.ent.light.pos.x-wgCamera.follow.pos.x-wgCamera.followobj.size.x*0.5;
 		var disty = this.ent.light.pos.y-wgCamera.follow.pos.y-wgCamera.followobj.size.y*0.5;
 		var dist = distx*distx+disty*disty;
-		if(dist < 10000)
+		if(!this.active && dist < 10000)
 		{
+			wgAudio.playSound("activate");
 			this.active = true;
 		}
 	}
