@@ -87,12 +87,15 @@ wgObject.prototype.getPixel = function(x, y)
         this.material.imageResource = wgResource.computeBinaryMap(this.material.imageResource.filename);
         return false;
     }
-        
-    var zoom = wgTexture.regionFactor * wgTexture.bytesPerChannel;
+                
+    var rowLength = this.material.imageResource.texture.size.x / (wgTexture.regionFactor * wgTexture.bytesPerChannel);
+    var rowHeight = this.material.imageResource.texture.size.y / (wgTexture.regionFactor * wgTexture.bytesPerChannel);
+    var leftOffset = x / (wgTexture.regionFactor * wgTexture.bytesPerChannel);
+    var topOffset = rowHeight - (y / (wgTexture.regionFactor * wgTexture.bytesPerChannel));
+    
     var isBlocked = data.data[
-        Math.floor(
-        x / zoom + 
-        this.material.imageResource.texture.size.x / zoom * y / zoom)];
+        Math.floor(leftOffset) + rowLength * Math.floor(topOffset)
+        ];
     
     //console.log(isBlocked + " " + x + "f" + y);
     

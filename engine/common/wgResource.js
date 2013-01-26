@@ -64,6 +64,21 @@ var wgResource = new function()
         resource.imageData = wgTexture.computeBinaryMap(canvas.width, canvas.height, canvas.getContext('2d'));
         resources[filename] = resource;
         
+        var index = 0;
+        var line = "";
+        for (var pixel in resource.imageData.data)
+        {
+            line += resource.imageData.data[pixel];
+            index++;
+            
+            if (index == canvas.width / wgTexture.regionFactor / wgTexture.bytesPerChannel)
+            {
+                index = 0;
+                console.log(line);
+                line = "";
+            }
+        }
+        
         return resource;
     }
     
