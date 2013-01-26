@@ -56,10 +56,15 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 
     this.updateInput(timeStamp);
     this.updateCameraPosition(timeStamp);
-
+        
+    //console.log(gGlobals.background.object.getPixel(
+    //    Math.floor(this.ent.object.pos.x), 
+    //    Math.floor(this.ent.object.pos.y)
+    //    ));
+    
     this.ent.object.pos.x = this.pos.x;
-    this.ent.object.pos.y = this.pos.y+Math.sin(this.deltaTime*0.05)*3;
-
+    this.ent.object.pos.y = this.pos.y; //+Math.sin(this.deltaTime*0.05)*3;
+       
     if(this.ent.object.material.inverttexx == 1)
     {
         this.ent.light.pos.x = this.ent.object.pos.x+120;
@@ -71,8 +76,7 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.ent.light.pos.y = this.ent.object.pos.y+30;
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
-    
-    //console.log(this.ent.object.getPixel(0,0));
+ 
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.

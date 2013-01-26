@@ -107,12 +107,12 @@ var wgRenderer = new function()
 				this.shader = tempobj.material.shader;
 			}
             
-			if(this.texture != tempobj.material.texture)
+			if(this.texture != tempobj.material.imageResource.texture)
 			{
 				wgMain.gl.activeTexture(wgMain.gl.TEXTURE0);
-				wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, tempobj.material.texture);
+				wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, tempobj.material.imageResource.texture);
 				wgMain.gl.uniform1i(tempobj.material.shader.texloc, 0);
-				this.texture = tempobj.material.texture;
+				this.texture = tempobj.material.imageResource.texture;
 			}
             
             wgMain.gl.uniform3f(tempobj.material.shader.projloc, canvassizex, canvassizey, scalefactor/2.0);

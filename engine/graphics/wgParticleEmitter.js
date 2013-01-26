@@ -70,7 +70,7 @@ wgParticleEmitter.prototype.addEmitter = function(texfile,mode)
     this.next.prev = this;
 	
 	temp.material = new wgMaterial();
-	temp.material.texture = wgTexture.getTexture(texfile,mode);
+	temp.material.texture = wgTexture.getTexture(texfile,mode).texture;
 	temp.material.shader = wgShader.getShader();
 	temp.mesh = wgMesh.getMesh();
 	

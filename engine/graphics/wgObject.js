@@ -66,20 +66,31 @@ wgObject.prototype.addObject = function(texfile, shader, mode)
     this.next.prev = this;
 	
 	temp.material = new wgMaterial();
-	temp.material.texture = wgTexture.getTexture(texfile, mode);
+	temp.material.imageResource = wgTexture.getTexture(texfile, mode);
 	temp.material.shader = wgShader.getShader(shader);
-	temp.mesh = wgMesh.getMesh();
+    temp.mesh = wgMesh.getMesh();
 	
     return temp;
 };
 
 wgObject.prototype.getPixel = function(x, y)
 {
-    //var color = this.material.texture.image[0,0];
-	
-    //return color;
+    var data = this.material.imageResource.imageData;
     
-    return "test";
+    if (data == null)
+    {
+        return false;
+    }
+        
+    var zoom = wgTexture.regionFactor * wgTexture.bytesPerChannel;
+    var isBlocked = data.data[
+        Math.floor(
+        x / zoom + 
+        this.material.imageResource.texture.size.x / zoom * y / zoom)];
+    
+    //console.log(isBlocked + " " + x + "f" + y);
+    
+    return isBlocked;
 };
 
 
