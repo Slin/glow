@@ -33,7 +33,7 @@ function aPlayer()
     this.ent = 0;
     this.deltaTime = 0;
 
-    this.pos = {x: -1000, y: -100};
+    this.pos = {x: 400, y: 400};
 }
 
 aPlayer.prototype.onInit = function()

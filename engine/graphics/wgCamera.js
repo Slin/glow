@@ -51,8 +51,8 @@ var wgCamera = new function()
 		this.speed = speed;
 	  
         // Always keep inside the level.
-        x = Math.min(Math.max(x, 0), gGlobals.background.object.size.x - canvassizex*scalefactor);
-        y = Math.min(Math.max(y, 0), gGlobals.background.object.size.y - canvassizey*scalefactor);
+        x = Math.min(Math.max(x, canvassizex/2*scalefactor), gGlobals.background.object.size.x - canvassizex*scalefactor/2);
+        y = Math.min(Math.max(y, canvassizey/2*scalefactor), gGlobals.background.object.size.y - canvassizey*scalefactor/2);
         
         this.pos.x = x;
         this.pos.y = y;

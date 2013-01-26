@@ -87,42 +87,25 @@ function main()
     gGlobals.player = wgMain.first_ent.next;
 
 
-	var light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: -768, y: -18}));
-	light.object.pos.x = -800;
-	light.object.pos.y = -50;
+	var light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 832, y: 532}));
+	light.object.pos.x = 800;
+	light.object.pos.y = 500;
 
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: -118}));
-	light.object.pos.x = 200;
-	light.object.pos.y = -150;
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 1732, y: 332}));
+	light.object.pos.x = 1700;
+	light.object.pos.y = 300;
 
 
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 32}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 0;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 432}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 400;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 832}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 800;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 1232}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 1200;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 1632}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 1600;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 2032}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 2000;
-
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 2432}));
-	light.object.pos.x = 200;
-	light.object.pos.y = 2400;
+	var x = 0;
+	var y = 0;
+	for(var i = 0; i < 10; i++)
+	{
+		x = Math.random()*3000+500;
+		y = Math.random()*3000+500;
+		light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: x+32, y: y+32}));
+		light.object.pos.x = x;
+		light.object.pos.y = y;
+	}
 
 
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel(), "light");

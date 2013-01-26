@@ -76,6 +76,8 @@ var wgMain = new function()
         
         wgTimer.getTime();
         wgMain.gameeventhandler(wgTimer.timestep);
+
+        //console.log(wgTimer.timestep);
 		
 		var tempent = wgMain.first_ent.next;
 		while(tempent)
