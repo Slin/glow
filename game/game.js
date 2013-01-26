@@ -72,11 +72,16 @@ function main()
 	wgMain.initWebgine(gameevent);
 
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
-	wgMain.first_ent.addEntity("game/player.png", new aPlayer());
+	
+    // The player entity.
+    wgMain.first_ent.addEntity("game/player.png", new aPlayer());
+    gGlobals.player = wgMain.first_ent.next;
+    
 	wgMain.first_ent.addEntity("game/player2.png", 0);
 	wgMain.first_ent.next.object.pos.x = 256;
 	wgMain.first_ent.addLight(new aLight());
-	
+
+    
 //	wgAudio.playAudio("song1", 1);
 
 	wgMain.mainLoop();

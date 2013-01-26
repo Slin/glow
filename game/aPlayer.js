@@ -40,8 +40,10 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.deltaTime += timeStamp;
 
     this.updateInput(timeStamp);
+    this.updateCameraPosition(timeStamp);
 };
 
+// Reads keyboard direction keys and moves the player with some velocity.
 aPlayer.prototype.updateInput = function(timeStamp)
 {
     this.deltaVelocityUpdate += timeStamp;
@@ -73,4 +75,10 @@ aPlayer.prototype.updateInput = function(timeStamp)
         this.velocity.x = this.velocity.x * 0.5;
         this.velocity.y = this.velocity.y * 0.5;
     }
+}
+
+// This method moves the camera.
+aPlayer.prototype.updateCameraPosition = function(timeStamp)
+{
+    wgCamera.update(timeStamp);
 }
