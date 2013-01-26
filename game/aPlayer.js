@@ -72,13 +72,13 @@ aPlayer.prototype.onUpdate = function(timeStep)
 
     if(this.exit == false)
     {
-        this.updateInput(timeStamp);
+        this.updateInput(timeStep);
     }
     else
     {
-        this.gotoExit(timeStamp);
+        this.gotoExit(timeStep);
     }
-    this.updateCameraPosition(timeStamp);
+    this.updateCameraPosition(timeStep);
         
     var isColliding = gGlobals.background.object.getPixel(
         Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
