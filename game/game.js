@@ -82,7 +82,7 @@ function main()
 	gGlobals.background = wgMain.first_ent.next;
     
     // The player entity.
-    wgMain.first_ent.addEntity("game/player3.png", new aPlayer());
+    wgMain.first_ent.addEntity("game/player3_transparent.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
 
 
@@ -107,7 +107,7 @@ function main()
 	}
 
 
-	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel(), "light");
+	wgMain.first_ent.addEntity("game/player2.png", new aLevel(), "light");
     
 	
 //	wgAudio.playAudio("song1", 1);

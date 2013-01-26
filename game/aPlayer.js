@@ -60,8 +60,15 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y+Math.sin(this.deltaTime*0.05)*3;
 
-    this.ent.light.pos.x = this.ent.object.pos.x+this.ent.object.size.x*0.5;
-    this.ent.light.pos.y = this.ent.object.pos.y+this.ent.object.size.y*0.5;
+    if(this.ent.object.material.inverttexx == 1)
+    {
+        this.ent.light.pos.x = this.ent.object.pos.x+90;//this.ent.object.size.x*0.5;
+    }
+    else
+    {
+        this.ent.light.pos.x = this.ent.object.pos.x+38;//this.ent.object.size.x*0.5;
+    }
+    this.ent.light.pos.y = this.ent.object.pos.y+45;
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
 };
