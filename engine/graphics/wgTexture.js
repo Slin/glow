@@ -26,11 +26,42 @@
 
 var wgTexture = new function()
 {
+    this.regionFactor = 8;
+    this.bytesPerChannel = 4; 
+        
 	this.isPowerOfTwo = function(x)
 	{
 		return (x&(x-1)) == 0;
 	};
 
+    this.computeBinaryMap = function(width, height, canvasData)
+    {
+        var factor = this.regionFactor * this.bytesPerChannel;
+        var convertedData = new Array(width * height / factor / factor);
+        
+        for (var xOff = 0; xOff < width; xOff += factor)
+        {
+            for (var yOff = 0; yOff < height; yOff += factor)
+            {
+                var region = canvasData.getImageData(xOff, yOff, factor, factor);
+                var color = 0;
+                
+                for (var pixelOffset = 0; pixelOffset < factor; pixelOffset += this.bytesPerChannel)
+                {
+                   color += region.data[pixelOffset+3];
+                }
+                
+                color /= (factor / this.bytesPerChannel);
+                
+                convertedData[xOff/factor + yOff/factor * (width / factor)] = (color > 192) ? 1 : 0;
+            }
+        }
+        
+        //console.log(convertedData);
+        
+        return { width: width, height: height, data: convertedData};
+    }
+    
     this.getTexture = function(filename,mode)
     {
         if(!wgResource.getResource(filename))
@@ -38,22 +69,22 @@ var wgTexture = new function()
             //erstellen und laden einer Textur...
             var texid = wgMain.gl.createTexture();
 			texid.size = {x: 1, y: 1};
-			wgResource.addResource(filename, texid, null);
+			var newResource = wgResource.addResource(filename, texid, null);
 			
             var image = new Image();
             
             image.onload = function()
             {
-                console.log(image);
-                 
                 var img = $(image)[0];
                 var canvas = $('<canvas/>')[0];
                 canvas.width = img.width;
                 canvas.height = img.height;
                 canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
                 
-                console.log(canvas.getContext('2d').getImageData(0,0,1,1));
-                
+                newResource.imageData = wgTexture.computeBinaryMap(canvas.width, canvas.height, canvas.getContext('2d'));
+                    
+                // console.log(newResource.imageData);
+                    
                 wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, texid);
                 wgMain.gl.pixelStorei(wgMain.gl.UNPACK_FLIP_Y_WEBGL, true);
                 
@@ -90,6 +121,6 @@ var wgTexture = new function()
             image.src = filename;
         }
         
-        return wgResource.getResource(filename).texture;
+        return wgResource.getResource(filename);
     };
 };

@@ -25,7 +25,7 @@
 
 function wgMaterial()
 {
-    this.texture = 0;
+    this.imageResource = 0;
     this.shader = 0;
 	
 	this.atlas = {posx : 0, posy : 0, width : 1.0, height : 1.0, columns : 1, rows : 1};

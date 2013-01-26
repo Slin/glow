@@ -66,7 +66,7 @@ wgText.prototype.set = function(text,x,y) {
         this.ltext[i].object.pos.x = this.x+i*this.dimx;
         this.ltext[i].object.pos.y = this.y;
         this.ltext[i].group = 1;
-        this.ltext[i].object.material.texture = wgTexture.getTexture(this.texture);
+        this.ltext[i].object.material.texture = wgTexture.getTexture(this.texture).texture;
         this.ltext[i].object.material.initAtlas(16, 8, 128, 64, 0, 0);
         this.ltext[i].object.material.setAtlas(this.string.charCodeAt(i));
     }
