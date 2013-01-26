@@ -33,6 +33,8 @@ function aPlayer()
     
     this.ent = 0;
     this.deltaTime = 0;
+    
+    this.isAlive = true;
 
     this.pos = {x: 400, y: 400};
 }
@@ -54,15 +56,25 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 {
     this.deltaTime += timeStamp;
 
+    if (!this.isAlive)
+    {
+        return;
+    }
+    
     this.updateInput(timeStamp);
     this.updateCameraPosition(timeStamp);
         
     var isColliding = gGlobals.background.object.getPixel(
-        Math.floor(this.ent.object.pos.x), 
-        Math.floor(this.ent.object.pos.y)
+        Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
+        Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
         );
         
     this.ent.light.color = isColliding ? {r: 0.632, g: 0.0, b: 0.0} : {r: 0.632, g: 1.0, b: 0.0};
+    
+    if (isColliding)
+    {
+        this.die();
+    }
     
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y; //+Math.sin(this.deltaTime*0.05)*3;
@@ -123,3 +135,10 @@ aPlayer.prototype.updateCameraPosition = function(timeStamp)
 {
     wgCamera.update(timeStamp);
 }
+
+// The player collided with the environment.
+aPlayer.prototype.die = function()
+{
+    this.isAlive = false; 
+}
+

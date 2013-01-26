@@ -26,7 +26,7 @@
 
 var wgTexture = new function()
 {
-    this.regionFactor = 16;
+    this.regionFactor = 4;
     this.bytesPerChannel = 4; 
         
 	this.isPowerOfTwo = function(x)
