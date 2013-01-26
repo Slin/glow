@@ -61,19 +61,26 @@ var wgRenderer = new function()
         wgMain.gl.disable(wgMain.gl.DEPTH_TEST);
 
         var lightposlist = [];
+        var lightcollist = [];
         var light = this.first_light.next;
         while(light != 0)
         {
         	lightposlist.push(light.pos.x);
         	lightposlist.push(light.pos.y);
         	lightposlist.push(light.range);
+
+        	lightcollist.push(light.color.r);
+        	lightcollist.push(light.color.g);
+        	lightcollist.push(light.color.b);
         	light = light.next;
         }
         while(lightposlist.length < 16*3)
         {
         	lightposlist.push(0.0);
+        	lightcollist.push(0.0);
         }
         var lightpos = new Float32Array(lightposlist);
+        var lightcol = new Float32Array(lightcollist);
         
         var tempobj = wgRenderer.first_obj.next;
 		var counter = 0;
@@ -119,6 +126,7 @@ var wgRenderer = new function()
 			if(!(tempobj.material.shader.lightposloc === undefined) && this.first_light.next != 0)
 			{
 				wgMain.gl.uniform3fv(tempobj.material.shader.lightposloc, lightpos);
+				wgMain.gl.uniform3fv(tempobj.material.shader.lightcolorloc, lightcol);
 			}
 
             wgMain.gl.bindBuffer(wgMain.gl.ARRAY_BUFFER, tempobj.mesh);

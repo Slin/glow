@@ -32,6 +32,7 @@ var wgCamera = new function()
 	this.speedy = 0.9;
 	
 	this.follow = 0; // Camera follows this wgObject
+	this.followobj = 0;
 	
 	this.set = function(x,y)
 	{
@@ -44,14 +45,14 @@ var wgCamera = new function()
 		if(!this.follow)
 			return;
 		
-		x = this.follow.pos.x+this.follow.size.x*0.5;
-		y = this.follow.pos.y+this.follow.size.y*0.5;
+		x = this.follow.pos.x+this.followobj.size.x*0.5;
+		y = this.follow.pos.y+this.followobj.size.y*0.5;
 		
 		this.speed = speed;
 	  
         // Always keep inside the level.
-        x = Math.min(Math.max(x, 0), gGlobals.background.object.size.x - canvassizex);
-        y = Math.min(Math.max(y, 0), gGlobals.background.object.size.y - canvassizey);
+        x = Math.min(Math.max(x, 0), gGlobals.background.object.size.x - canvassizex*scalefactor);
+        y = Math.min(Math.max(y, 0), gGlobals.background.object.size.y - canvassizey*scalefactor);
         
         this.pos.x = x;
         this.pos.y = y;

@@ -23,10 +23,45 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-var scalefactor = 1;
+var scalefactor = 2/(window.devicePixelRatio || 1);
 var canvassizex = 800;
 var canvassizey = 400;
 var gamemode = 1;
+
+function fullscreen()
+{
+    var el = document.getElementById('wgCanvas');
+ 
+    if(el.webkitRequestFullScreen)
+    {
+        el.webkitRequestFullScreen();
+    }
+    else
+    {
+        el.mozRequestFullScreen();
+    }            
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
 
 var wgMain = new function()
 {
@@ -71,5 +106,7 @@ var wgMain = new function()
         this.gl = WebGLUtils.setupWebGL(this.canvas);
         WebGLDebugUtils.makeDebugContext(this.gl, this.throwOnGLError);
         wgMain.gameeventhandler = event;
+
+        this.canvas.addEventListener("click", toggleFullScreen);
     };
 };

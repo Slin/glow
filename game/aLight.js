@@ -24,20 +24,37 @@
 //	THE SOFTWARE.
 
 
-function aLight()
+function aLight(lightpos)
 {
 	this.ent = 0;
 	this.time = Math.random()*10000.0;
+	this.active = false;
+	this.lightpos = lightpos;
 }
 
 aLight.prototype.onInit = function()
 {
-	
+	this.ent.createLight();
+	this.ent.light.pos = this.lightpos;
+	this.ent.light.range = 0;
 }
 
 aLight.prototype.onUpdate = function(ts)
 {
 	this.time += ts;
 	var clamp = Math.sin(this.time*0.005)*0.5+0.5;
-	this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 55, 60, 2);
+	if(this.active == true)
+	{
+		this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 85, 90, 2);
+	}
+	else
+	{
+		var distx = this.ent.light.pos.x-wgCamera.follow.pos.x-wgCamera.followobj.size.x*0.5;
+		var disty = this.ent.light.pos.y-wgCamera.follow.pos.y-wgCamera.followobj.size.y*0.5;
+		var dist = distx*distx+disty*disty;
+		if(dist < 10000)
+		{
+			this.active = true;
+		}
+	}
 };

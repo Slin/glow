@@ -85,20 +85,47 @@ function main()
     // The player entity.
     wgMain.first_ent.addEntity("game/player3.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
-    
-	wgMain.first_ent.addEntity("game/player2.png", 0);
-	wgMain.first_ent.next.object.pos.x = 256;
+
+
+	var light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: -768, y: -18}));
+	light.object.pos.x = -800;
+	light.object.pos.y = -50;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: -118}));
+	light.object.pos.x = 200;
+	light.object.pos.y = -150;
+
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 32}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 0;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 432}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 400;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 832}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 800;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 1232}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 1200;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 1632}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 1600;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 2032}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 2000;
+
+	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 232, y: 2432}));
+	light.object.pos.x = 200;
+	light.object.pos.y = 2400;
+
 
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel(), "light");
-
-
-	var light = wgMain.first_ent.addLight(new aLight());
-	light.light.pos.x = 200;
-	light.light.pos.y = 400;
-
-	light = wgMain.first_ent.addLight(new aLight());
-	light.light.pos.x = 200;
-	light.light.pos.y = 1000;
     
 	
 //	wgAudio.playAudio("song1", 1);

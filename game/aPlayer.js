@@ -32,14 +32,18 @@ function aPlayer()
     
     this.ent = 0;
     this.deltaTime = 0;
+
+    this.pos = {x: -1000, y: -100};
 }
 
 aPlayer.prototype.onInit = function()
 {
-	wgCamera.follow = this.ent.object;
+	wgCamera.follow = this;
+    wgCamera.followobj = this.ent.object;
     this.ent.object.size.x = 128;
     this.ent.object.size.y = 128;
     this.ent.createLight();
+    this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
 	this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
 	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
 }
@@ -51,6 +55,9 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 
     this.updateInput(timeStamp);
     this.updateCameraPosition(timeStamp);
+
+    this.ent.object.pos.x = this.pos.x;
+    this.ent.object.pos.y = this.pos.y+Math.sin(this.deltaTime*0.05)*3;
 
     this.ent.light.pos.x = this.ent.object.pos.x+this.ent.object.size.x*0.5;
     this.ent.light.pos.y = this.ent.object.pos.y+this.ent.object.size.y*0.5;
@@ -80,8 +87,8 @@ aPlayer.prototype.updateInput = function(timeStamp)
        this.velocity.y += timeStamp;
     }
            
-    this.ent.object.pos.x += this.SpeedFactor * this.velocity.x;
-    this.ent.object.pos.y += this.SpeedFactor * this.velocity.y;
+    this.pos.x += this.SpeedFactor * this.velocity.x;
+    this.pos.y += this.SpeedFactor * this.velocity.y;
     
     while (this.deltaVelocityUpdate > this.VelocityUpdateTime)
     {

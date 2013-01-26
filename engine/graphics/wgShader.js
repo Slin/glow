@@ -127,7 +127,7 @@ var wgShader = new function()
 					"	 for(int i = 0; i < 16; i++)"+
 					"	 {"+
 					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
-					"    	gl_FragColor.rgb += vec3(pow(1.0/(dist*dist*dist*dist), 1.0/2.2));"+
+					"    	gl_FragColor.rgb += pow(lightcolor[i]/(dist*dist*dist*dist), vec3(1.0/2.2));"+
 					"	 }"+
 					"    gl_FragColor.a = 1.0;"+
 					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
