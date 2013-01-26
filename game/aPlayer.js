@@ -36,7 +36,7 @@ function aPlayer()
 
 aPlayer.prototype.onInit = function()
 {
-//	wgCamera.follow = this.ent.object;
+	wgCamera.follow = this.ent.object;
 	this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
 	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
 }
