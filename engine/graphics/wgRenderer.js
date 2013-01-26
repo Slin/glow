@@ -76,7 +76,7 @@ var wgRenderer = new function()
         	lightcollist.push(light.color.b);
         	light = light.next;
         }
-        while(lightposlist.length < 16*3)
+        while(lightposlist.length < 8*3)
         {
         	lightposlist.push(0.0);
         	lightcollist.push(0.0);
