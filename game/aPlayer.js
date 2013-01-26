@@ -38,14 +38,15 @@ function aPlayer(levelchange)
     this.deltaVelocityUpdate = 0;
     this.deltaRadarUpdate = 0;
     
+    this.pos = {x: 400, y: 400};
     this.ent = 0;
     this.deltaTime = 0;
     
+    // Gameplay variables.
+    this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
     this.levelchange = levelchange;
-
-    this.pos = {x: 400, y: 400};
 }
 
 aPlayer.prototype.onInit = function()
@@ -116,19 +117,19 @@ aPlayer.prototype.updateInput = function(timeStep)
 
     if (wgKeyboard.left)
     {
-       this.velocity.x -= timeStep;
+       this.velocity.x -= this.controlsInverted ? -timeStep : timeStep;
     }
     if (wgKeyboard.right)
     {
-       this.velocity.x += timeStep;
+       this.velocity.x += this.controlsInverted ? -timeStep : timeStep;
     }
     if (wgKeyboard.down)
     {
-       this.velocity.y -= timeStep;
+       this.velocity.y -= this.controlsInverted ? -timeStep : timeStep;
     }
     if (wgKeyboard.up)
     {
-       this.velocity.y += timeStep;
+       this.velocity.y += this.controlsInverted ? -timeStep : timeStep;
     }
            
     this.pos.x += this.SpeedFactor * this.velocity.x;

@@ -56,7 +56,7 @@ aLight.prototype.onUpdate = function(ts)
 	var clamp = Math.sin(this.time*0.005)*0.5+0.5;
 	if(this.active == true)
 	{
-		this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 145, 150, 2);
+		this.ent.light.range = $.easing.easeInOutQuint(this.ent.light.range, clamp, 145, 150, 2);
 	}
 	else
 	{
