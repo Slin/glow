@@ -93,7 +93,7 @@ aPlayer.prototype.onUpdate = function(timeStep)
     
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y + Math.sin(this.deltaTime*0.05)*3;
-       
+     
     if(this.ent.object.material.inverttexx == 1)
     {
         this.ent.light.pos.x = this.ent.object.pos.x+120;
@@ -103,7 +103,7 @@ aPlayer.prototype.onUpdate = function(timeStep)
         this.ent.light.pos.x = this.ent.object.pos.x+8;
     }
     this.ent.light.pos.y = this.ent.object.pos.y+30;
-  
+
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
  
@@ -180,20 +180,25 @@ aPlayer.prototype.die = function()
 aPlayer.prototype.updateCollision = function(timeStep)
 {
     this.deltaRadarUpdate += timeStep;
-
+    var length = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+    var velocityNorm = { x: this.velocity.x / length, y: this.velocity.y / length };
+    
     var origin = 
         {
-            x: Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2),
+            x: Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2) 
+            + (velocityNorm.x * (this.ent.object.size.x * 0.8)),
             y: Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
+            + (velocityNorm.y * (this.ent.object.size.y * 0.8))
         };
     
-    var length = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
-
+    //this.ent.light.pos.x = origin.x;
+    //this.ent.light.pos.y = origin.y;
+   
     // Get a point placed in front of the move direciton.
     var pickPosition = 
         {
-            x: origin.x + (this.velocity.x / length * Math.min(length, this.ent.object.size.x * 4)) ,
-            y: origin.y + (this.velocity.y / length * Math.min(length, this.ent.object.size.y * 4)) 
+            x: origin.x + (velocityNorm.x * Math.min(length, this.ent.object.size.x * 4)) ,
+            y: origin.y + (velocityNorm.y * Math.min(length, this.ent.object.size.y * 4)) 
         };     
     
     var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
@@ -217,8 +222,7 @@ aPlayer.prototype.updateCollision = function(timeStep)
         this.radarFeedback *= this.velocityReductionFactor;
     }
     
-    //this.ent.light.pos.x = pickPosition.x;
-    //this.ent.light.pos.y = pickPosition.y;
+    
     
     this.radarStrengthNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
         
