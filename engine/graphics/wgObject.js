@@ -73,6 +73,16 @@ wgObject.prototype.addObject = function(texfile, shader, mode)
     return temp;
 };
 
+wgObject.prototype.getPixel = function(x, y)
+{
+    //var color = this.material.texture.image[0,0];
+	
+    //return color;
+    
+    return "test";
+};
+
+
 wgObject.prototype.destroy = function() 
 {
 	this.prev.next = this.next; 

@@ -86,10 +86,10 @@ var wgShader = new function()
 				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
 				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
 				
-				wgResource.addResource("shader_base", id);
+				wgResource.addResource("shader_base", id, null);
 			}
 
-			return wgResource.getResource("shader_base");
+			return wgResource.getResource("shader_base").texture;
 		}
 		else
 		{
@@ -127,7 +127,7 @@ var wgShader = new function()
 					"	 for(int i = 0; i < 16; i++)"+
 					"	 {"+
 					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
-					"    	gl_FragColor.rgb += pow(lightcolor[i]/(dist*dist*dist*dist), vec3(1.0/2.2));"+
+					"    	gl_FragColor.rgb += (lightcolor[i]/(dist*dist*dist*dist));"+
 					"	 }"+
 					"    gl_FragColor.a = 1.0;"+
 					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
@@ -151,10 +151,10 @@ var wgShader = new function()
 				id.lightposloc = wgMain.gl.getUniformLocation(id, "lightpos");
 				id.lightcolorloc = wgMain.gl.getUniformLocation(id, "lightcolor");
 				
-				wgResource.addResource("shader_light", id);
+				wgResource.addResource("shader_light", id, null);
 			}
 
-			return wgResource.getResource("shader_light");
+			return wgResource.getResource("shader_light").texture;
 		}
     };
 };
