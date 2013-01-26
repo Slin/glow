@@ -25,7 +25,8 @@
 function aPlayer()
 {
     this.SpeedFactor = 0.02;
-    this.VelocityUpdateTime = 200;
+    this.VelocityUpdateTime = 50;
+    this.velocityReductionFactor = 0.95;
     
     this.velocity = { x: 0, y: 0};
     this.deltaVelocityUpdate = 0;
@@ -62,7 +63,7 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.ent.light.pos.x = this.ent.object.pos.x+this.ent.object.size.x*0.5;
     this.ent.light.pos.y = this.ent.object.pos.y+this.ent.object.size.y*0.5;
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
-    this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 40, 60, 2);
+    this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.
@@ -94,9 +95,12 @@ aPlayer.prototype.updateInput = function(timeStamp)
     {
         this.deltaVelocityUpdate -= this.VelocityUpdateTime;
          
-        this.velocity.x = this.velocity.x * 0.5;
-        this.velocity.y = this.velocity.y * 0.5;
+        this.velocity.x = this.velocity.x * this.velocityReductionFactor;
+        this.velocity.y = this.velocity.y * this.velocityReductionFactor;
     }
+    
+    this.ent.object.material.inverttexx = this.velocity.x < 0 ? 1 : 0;
+    
 }
 
 // This method moves the camera.
