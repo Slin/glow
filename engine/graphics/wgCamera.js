@@ -25,6 +25,9 @@
 
 var wgCamera = new function() 
 {
+    this.BorderAmount = {x: 0.4, y: 0.4};
+    
+    this.borderMargin = {x: 100, y: 100};
     this.pos = {x: 0, y: 0};
     this.dir = 0;
 	this.look = 0;
@@ -44,12 +47,37 @@ var wgCamera = new function()
     {
 		if(!this.follow)
 			return;
+            
+        // Update inner frame size
+        this.borderMargin.x = canvassizex * this.BorderAmount.x;
+		this.borderMargin.y = canvassizey * this.BorderAmount.y;
 		
 		x = this.follow.pos.x+this.followobj.size.x*0.5;
 		y = this.follow.pos.y+this.followobj.size.y*0.5;
 		
 		this.speed = speed;
 	  
+        var xOff = this.borderMargin.x - Math.max(Math.min((canvassizex / 2) 
+            - Math.abs(this.pos.x - x), this.borderMargin.x), 0);
+      
+        if (x - this.pos.x < 0)
+        {
+            xOff *= -1;
+        }
+
+        var yOff = this.borderMargin.y - Math.max(Math.min((canvassizey / 2) 
+            - Math.abs(this.pos.y - y), this.borderMargin.y), 0); 
+                  
+        if (y - this.pos.y < 0)
+        {
+            yOff *= -1;
+        }
+        
+        //console.log(xOff + " " + yOff + "," );
+      
+        x = this.pos.x + xOff;
+        y = this.pos.y + yOff;
+      
         // Always keep inside the level.
         x = Math.min(Math.max(x, canvassizex/2*scalefactor), gGlobals.background.object.size.x - canvassizex*scalefactor/2);
         y = Math.min(Math.max(y, canvassizey/2*scalefactor), gGlobals.background.object.size.y - canvassizey*scalefactor/2);
