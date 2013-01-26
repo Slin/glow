@@ -76,10 +76,15 @@ wgObject.prototype.addObject = function(texfile, shader, mode)
 
 wgObject.prototype.getPixel = function(x, y)
 {
-    var data = this.material.imageResource.imageData;
+    if (this.material.imageResource.imageObject == null)
+    {
+        return false;
+    }
     
+    var data = this.material.imageResource.imageData;
     if (data == null)
     {
+        this.material.imageResource = wgResource.computeBinaryMap(this.material.imageResource.filename);
         return false;
     }
         

@@ -89,7 +89,7 @@ var wgShader = new function()
 				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
 				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
 				
-				wgResource.addResource("shader_base", id);
+				wgResource.addResource("shader_base", id, null, null);
 			}
 
 			return wgResource.getResource("shader_base").texture;
@@ -119,15 +119,15 @@ var wgShader = new function()
 				var fShaderQuellcode = "precision mediump float;"+
 					"uniform lowp sampler2D tex0;"+
 					"uniform lowp vec4 color;"+
-					"uniform mediump vec3 lightpos[8];"+
-					"uniform mediump vec3 lightcolor[8];"+
+					"uniform mediump vec3 lightpos[16];"+
+					"uniform mediump vec3 lightcolor[16];"+
 					"varying mediump vec2 texcoord0;"+
 					"varying mediump vec2 worldpos;"+
 					"void main()"+
 					"{"+
 					"	 gl_FragColor.rgb = vec3(0.0);"+
 					"	 float dist = 0.0;"+
-					"	 for(int i = 0; i < 8; i++)"+
+					"	 for(int i = 0; i < 16; i++)"+
 					"	 {"+
 					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
 					"    	gl_FragColor.rgb += lightcolor[i]/(dist*dist*dist*dist);"+
@@ -155,7 +155,7 @@ var wgShader = new function()
 				id.lightposloc = wgMain.gl.getUniformLocation(id, "lightpos");
 				id.lightcolorloc = wgMain.gl.getUniformLocation(id, "lightcolor");
 				
-				wgResource.addResource("shader_light", id);
+				wgResource.addResource("shader_light", id, null, null);
 			}
 
 			return wgResource.getResource("shader_light").texture;

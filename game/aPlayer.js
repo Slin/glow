@@ -57,10 +57,12 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.updateInput(timeStamp);
     this.updateCameraPosition(timeStamp);
         
-    //console.log(gGlobals.background.object.getPixel(
-    //    Math.floor(this.ent.object.pos.x), 
-    //    Math.floor(this.ent.object.pos.y)
-    //    ));
+    var isColliding = gGlobals.background.object.getPixel(
+        Math.floor(this.ent.object.pos.x), 
+        Math.floor(this.ent.object.pos.y)
+        );
+        
+    this.ent.light.color = isColliding ? {r: 0.632, g: 0.0, b: 0.0} : {r: 0.632, g: 1.0, b: 0.0};
     
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y; //+Math.sin(this.deltaTime*0.05)*3;

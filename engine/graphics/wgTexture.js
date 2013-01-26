@@ -69,22 +69,14 @@ var wgTexture = new function()
             //erstellen und laden einer Textur...
             var texid = wgMain.gl.createTexture();
 			texid.size = {x: 1, y: 1};
-			var newResource = wgResource.addResource(filename, texid, null);
 			
             var image = new Image();
-            
+            var newResource = wgResource.addResource(filename, texid, null, null);
+			
             image.onload = function()
             {
-                var img = $(image)[0];
-                var canvas = $('<canvas/>')[0];
-                canvas.width = img.width;
-                canvas.height = img.height;
-                canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
-                
-                newResource.imageData = wgTexture.computeBinaryMap(canvas.width, canvas.height, canvas.getContext('2d'));
-                    
-                // console.log(newResource.imageData);
-                    
+                newResource.imageObject = this;
+            
                 wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, texid);
                 wgMain.gl.pixelStorei(wgMain.gl.UNPACK_FLIP_Y_WEBGL, true);
                 
