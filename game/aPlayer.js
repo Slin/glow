@@ -47,8 +47,12 @@ function aPlayer()
     this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
-
-    this.pos = {x: 400, y: 400};
+    
+    this.PoisonDuration = 5000;
+    this.poisonedTimeLeft = 0;
+    this.PositiveColor = {r: 0.632, g: 1.0, b: 0.0};
+    this.NegativeColor = {r: 1.0, g: 0.0, b: 0.4};
+    
 }
 
 aPlayer.prototype.onInit = function()
@@ -58,7 +62,7 @@ aPlayer.prototype.onInit = function()
     this.ent.object.size.x = 128;
     this.ent.object.size.y = 128;
     this.ent.createLight();
-    this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
+    this.ent.light.color = this.PositiveColor;
 	this.ent.object.material.initAtlas(4, 4, 1024, 1024, 1024, 1024);
 	this.ent.object.material.setAnimation(0, 7, 0.6, 1);
 
@@ -98,6 +102,8 @@ aPlayer.prototype.onUpdate = function(timeStep)
         Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
         Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
         );
+    
+    this.updatePenalties(timeStep);
     
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y + Math.sin(this.deltaTime*0.05)*3;
@@ -183,13 +189,35 @@ aPlayer.prototype.updateCameraPosition = function(timeStep)
 // The player collided with the environment.
 aPlayer.prototype.die = function()
 {
-    if(this.isAlive == true)
+     if(this.isAlive == true)
     {
-        this.ent.object.material.setAnimation(8, 15, 0.2, 0);
+		this.ent.object.material.setAnimation(8, 15, 0.2, 0);
         this.ent.light.range = 0;
         gGlobals.reload = true;
         this.isAlive = false;
+    }    this.ent.object.material.setAnimation(8, 15, 0.4, 0);
+}
+
+// Updates player penalties like poison.
+aPlayer.prototype.updatePenalties = function(timeStep)
+{
+    if (this.poisonedTimeLeft > 0)
+    {
+       this.poisonedTimeLeft -= timeStep;
     }
+    
+    if (this.poisonedTimeLeft <= 0)
+    {
+        this.poisonedTimeLeft = 0;
+        this.controlsInverted = false;
+    }
+}
+
+// The player collided with the environment.
+aPlayer.prototype.setPoison = function()
+{
+    this.controlsInverted = true;
+    this.poisonedTimeLeft = this.PoisonDuration;
 }
 
 aPlayer.prototype.updateCollision = function(timeStep)
