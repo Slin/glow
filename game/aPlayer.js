@@ -34,6 +34,13 @@ function aPlayer()
     this.deltaTime = 0;
 }
 
+aPlayer.prototype.onInit = function()
+{
+//	wgCamera.follow = this.ent.object;
+	this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
+	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
+}
+
 // timeStamp: Elapsed time scince last render call in millisecons.
 aPlayer.prototype.onUpdate = function(timeStamp)
 {

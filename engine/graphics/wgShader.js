@@ -38,53 +38,105 @@ var wgShader = new function()
         return shader;
     };
 
-    this.getShader = function()
+    this.getShader = function(name)
     {
-		if(!wgResource.getResource("shader"))
-		{
-			var vShaderQuellcode = "attribute vec2 vPosition;"+
-				"uniform vec3 projection;"+
-				"uniform vec4 object;"+
-				"uniform vec4 atlasinfo;"+
-				"uniform float inverttexcoordx;"+
-				"varying vec2 texcoord0;"+
-				"void main()"+
-				"{"+
-				"	texcoord0 = vPosition;"+
-				"	if(inverttexcoordx > 0.1)"+
-				"		texcoord0.x = 1.0-texcoord0.x;"+
-				"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
-				"    gl_Position = vec4((object.xy+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
-				"}" ;
-				
-			var fShaderQuellcode = "precision mediump float;"+
-				"uniform lowp sampler2D tex0;"+
-				"uniform lowp vec4 color;"+
-				"varying mediump vec2 texcoord0;"+
-				"void main()"+
-				"{"+
-				"    gl_FragColor = texture2D(tex0, texcoord0)*color;"+
-				"	 gl_FragColor.rgb *= gl_FragColor.a;"+
-				"}";
+    	if(name != "light")
+    	{
+			if(!wgResource.getResource("shader_base"))
+			{
+				var vShaderQuellcode = "attribute vec2 vPosition;"+
+					"uniform vec3 projection;"+
+					"uniform vec4 object;"+
+					"uniform vec4 atlasinfo;"+
+					"uniform float inverttexcoordx;"+
+					"varying vec2 texcoord0;"+
+					"void main()"+
+					"{"+
+					"	texcoord0 = vPosition;"+
+					"	if(inverttexcoordx > 0.1)"+
+					"		texcoord0.x = 1.0-texcoord0.x;"+
+					"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
+					"    gl_Position = vec4((object.xy+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
+					"}" ;
+					
+				var fShaderQuellcode = "precision mediump float;"+
+					"uniform lowp sampler2D tex0;"+
+					"uniform lowp vec4 color;"+
+					"varying mediump vec2 texcoord0;"+
+					"void main()"+
+					"{"+
+					"    gl_FragColor = texture2D(tex0, texcoord0)*color;"+
+					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
+					"}";
 
-			var id = wgMain.gl.createProgram();
-			var vShader = this.compileShader(wgMain.gl.VERTEX_SHADER, vShaderQuellcode);
-			wgMain.gl.attachShader(id, vShader);
-			var fShader = this.compileShader(wgMain.gl.FRAGMENT_SHADER, fShaderQuellcode);
-			wgMain.gl.attachShader(id, fShader);
-			wgMain.gl.linkProgram(id);
-			
-			id.posloc = wgMain.gl.getAttribLocation(id, "vPosition");
-			id.projloc = wgMain.gl.getUniformLocation(id, "projection");
-			id.objloc = wgMain.gl.getUniformLocation(id, "object");
-			id.atlasloc = wgMain.gl.getUniformLocation(id, "atlasinfo");
-			id.inverttexx = wgMain.gl.getUniformLocation(id, "inverttexcoordx");
-			id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
-			id.colorloc = wgMain.gl.getUniformLocation(id, "color");
-			
-			wgResource.addResource("shader", id);
+				var id = wgMain.gl.createProgram();
+				var vShader = this.compileShader(wgMain.gl.VERTEX_SHADER, vShaderQuellcode);
+				wgMain.gl.attachShader(id, vShader);
+				var fShader = this.compileShader(wgMain.gl.FRAGMENT_SHADER, fShaderQuellcode);
+				wgMain.gl.attachShader(id, fShader);
+				wgMain.gl.linkProgram(id);
+				
+				id.posloc = wgMain.gl.getAttribLocation(id, "vPosition");
+				id.projloc = wgMain.gl.getUniformLocation(id, "projection");
+				id.objloc = wgMain.gl.getUniformLocation(id, "object");
+				id.atlasloc = wgMain.gl.getUniformLocation(id, "atlasinfo");
+				id.inverttexx = wgMain.gl.getUniformLocation(id, "inverttexcoordx");
+				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
+				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
+				
+				wgResource.addResource("shader_base", id);
+			}
+
+			return wgResource.getResource("shader_base");
 		}
-        
-        return wgResource.getResource("shader");
+		else
+		{
+			if(!wgResource.getResource("shader_light"))
+			{
+				var vShaderQuellcode = "attribute vec2 vPosition;"+
+					"uniform vec3 projection;"+
+					"uniform vec4 object;"+
+					"uniform vec4 atlasinfo;"+
+					"uniform float inverttexcoordx;"+
+					"varying vec2 texcoord0;"+
+					"void main()"+
+					"{"+
+					"	texcoord0 = vPosition;"+
+					"	if(inverttexcoordx > 0.1)"+
+					"		texcoord0.x = 1.0-texcoord0.x;"+
+					"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
+					"    gl_Position = vec4((object.xy+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
+					"}" ;
+					
+				var fShaderQuellcode = "precision mediump float;"+
+					"uniform lowp sampler2D tex0;"+
+					"uniform lowp vec4 color;"+
+					"varying mediump vec2 texcoord0;"+
+					"void main()"+
+					"{"+
+					"    gl_FragColor = texture2D(tex0, texcoord0)*color;"+
+					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
+					"}";
+
+				var id = wgMain.gl.createProgram();
+				var vShader = this.compileShader(wgMain.gl.VERTEX_SHADER, vShaderQuellcode);
+				wgMain.gl.attachShader(id, vShader);
+				var fShader = this.compileShader(wgMain.gl.FRAGMENT_SHADER, fShaderQuellcode);
+				wgMain.gl.attachShader(id, fShader);
+				wgMain.gl.linkProgram(id);
+				
+				id.posloc = wgMain.gl.getAttribLocation(id, "vPosition");
+				id.projloc = wgMain.gl.getUniformLocation(id, "projection");
+				id.objloc = wgMain.gl.getUniformLocation(id, "object");
+				id.atlasloc = wgMain.gl.getUniformLocation(id, "atlasinfo");
+				id.inverttexx = wgMain.gl.getUniformLocation(id, "inverttexcoordx");
+				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
+				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
+				
+				wgResource.addResource("shader_light", id);
+			}
+
+			return wgResource.getResource("shader_light");
+		}
     };
 };

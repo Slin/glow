@@ -5,6 +5,7 @@
 // Created by Nils Daumann on 30.10.11.
 // Copyright (c) 2011 Nils Daumann
 
+
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -12,8 +13,10 @@
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
 
+
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
+
 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,12 +26,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+
 var gGlobals = new function()
 {
 	this.player = 0;
 	this.cursorposx = 0;
 	this.cursorposy = 0;
 };
+
+
+
 
 
 
@@ -46,6 +53,7 @@ function toggleMusic()
 	}
 }
 
+
 var audioplaying = 1;
 function toggleSound()
 {
@@ -62,19 +70,23 @@ function toggleSound()
 	}
 }
 
+
 function gameevent(ts)
 {
 
+
 }
+
 
 function main()
 {
 	wgMain.initWebgine(gameevent);
 
+
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
 	
     // The player entity.
-    wgMain.first_ent.addEntity("game/player.png", new aPlayer());
+    wgMain.first_ent.addEntity("game/player3.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
     
 	wgMain.first_ent.addEntity("game/player2.png", 0);
@@ -82,7 +94,9 @@ function main()
 	wgMain.first_ent.addLight(new aLight());
 
     
+	
 //	wgAudio.playAudio("song1", 1);
+
 
 	wgMain.mainLoop();
 }

@@ -40,7 +40,7 @@ function wgEntity()
 	this.prev = 0;
 }
 
-wgEntity.prototype.addEntity = function(texfile, act, mode)
+wgEntity.prototype.addEntity = function(texfile, act, shader, mode)
 {
 	var temp = new wgEntity();
     temp.next = this.next;
