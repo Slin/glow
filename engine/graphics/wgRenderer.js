@@ -53,7 +53,7 @@ var wgRenderer = new function()
 
         // Hintergrund loeschen
         wgMain.gl.clearDepth(1.0);
-        wgMain.gl.clearColor(0.5, 0.7, 0.8, 1.0);
+        wgMain.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         wgMain.gl.clear(wgMain.gl.COLOR_BUFFER_BIT|wgMain.gl.DEPTH_BUFFER_BIT);
         
         wgMain.gl.blendFunc(wgMain.gl.ONE, wgMain.gl.ONE_MINUS_SRC_ALPHA);

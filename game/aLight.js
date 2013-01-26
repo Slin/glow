@@ -36,6 +36,9 @@ aLight.prototype.onInit = function()
 {
 	this.ent.createLight();
 	this.ent.light.pos = this.lightpos;
+	this.ent.light.color.r = Math.random();
+	this.ent.light.color.g = Math.random();
+	this.ent.light.color.b = Math.random();
 	this.ent.light.range = 0;
 }
 
@@ -45,7 +48,7 @@ aLight.prototype.onUpdate = function(ts)
 	var clamp = Math.sin(this.time*0.005)*0.5+0.5;
 	if(this.active == true)
 	{
-		this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 85, 90, 2);
+		this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 145, 150, 2);
 	}
 	else
 	{

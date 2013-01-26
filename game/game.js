@@ -70,7 +70,6 @@ function toggleSound()
 function gameevent(ts)
 {
 
-
 }
 
 
@@ -98,7 +97,7 @@ function main()
 
 	var x = 0;
 	var y = 0;
-	for(var i = 0; i < 10; i++)
+	for(var i = 0; i < 13; i++)
 	{
 		x = Math.random()*3000+500;
 		y = Math.random()*3000+500;
