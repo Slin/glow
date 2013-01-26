@@ -89,7 +89,7 @@ var wgShader = new function()
 				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
 				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
 				
-				wgResource.addResource("shader_base", id);
+				wgResource.addResource("shader_base", id, null, null);
 			}
 
 			return wgResource.getResource("shader_base").texture;
@@ -155,7 +155,7 @@ var wgShader = new function()
 				id.lightposloc = wgMain.gl.getUniformLocation(id, "lightpos");
 				id.lightcolorloc = wgMain.gl.getUniformLocation(id, "lightcolor");
 				
-				wgResource.addResource("shader_light", id);
+				wgResource.addResource("shader_light", id, null, null);
 			}
 
 			return wgResource.getResource("shader_light").texture;

@@ -32,12 +32,39 @@ var wgResource = new function()
 		return resources[filename];
 	};
 	
-	this.addResource = function(filename, res, data)
+	this.addResource = function(filename, res, image, data)
 	{
-        var newResource = { texture: res, imageData: data};
+        var newResource = { filename: filename, texture: res, imageData: data, imageObject: image};
     
 		resources[filename] = newResource;
         
         return newResource;
 	};
+    
+    this.computeBinaryMap = function(filename)
+    {    
+        var resource = this.getResource(filename);
+    
+        if (!resource)
+        {
+            return null;
+        }
+        
+        if (resource.imageData != null)
+        {
+            return null;
+        }
+    
+        var img = $(resource.imageObject)[0];
+        var canvas = $('<canvas/>')[0];
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+        
+        resource.imageData = wgTexture.computeBinaryMap(canvas.width, canvas.height, canvas.getContext('2d'));
+        resources[filename] = resource;
+        
+        return resource;
+    }
+    
 };
