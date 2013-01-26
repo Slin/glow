@@ -47,6 +47,7 @@ var wgShader = new function()
 				var vShaderQuellcode = "attribute vec2 vPosition;"+
 					"uniform vec3 projection;"+
 					"uniform vec4 object;"+
+					"uniform vec2 campos;"+
 					"uniform vec4 atlasinfo;"+
 					"uniform float inverttexcoordx;"+
 					"varying vec2 texcoord0;"+
@@ -56,7 +57,7 @@ var wgShader = new function()
 					"	if(inverttexcoordx > 0.1)"+
 					"		texcoord0.x = 1.0-texcoord0.x;"+
 					"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
-					"    gl_Position = vec4((object.xy+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
+					"    gl_Position = vec4((object.xy-campos+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
 					"}" ;
 					
 				var fShaderQuellcode = "precision mediump float;"+
@@ -79,6 +80,7 @@ var wgShader = new function()
 				id.posloc = wgMain.gl.getAttribLocation(id, "vPosition");
 				id.projloc = wgMain.gl.getUniformLocation(id, "projection");
 				id.objloc = wgMain.gl.getUniformLocation(id, "object");
+				id.camposloc = wgMain.gl.getUniformLocation(id, "campos");
 				id.atlasloc = wgMain.gl.getUniformLocation(id, "atlasinfo");
 				id.inverttexx = wgMain.gl.getUniformLocation(id, "inverttexcoordx");
 				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
@@ -96,25 +98,38 @@ var wgShader = new function()
 				var vShaderQuellcode = "attribute vec2 vPosition;"+
 					"uniform vec3 projection;"+
 					"uniform vec4 object;"+
+					"uniform vec2 campos;"+
 					"uniform vec4 atlasinfo;"+
 					"uniform float inverttexcoordx;"+
 					"varying vec2 texcoord0;"+
+					"varying vec2 worldpos;"+
 					"void main()"+
 					"{"+
 					"	texcoord0 = vPosition;"+
 					"	if(inverttexcoordx > 0.1)"+
 					"		texcoord0.x = 1.0-texcoord0.x;"+
 					"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
-					"    gl_Position = vec4((object.xy+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
+					"	 worldpos = (object.xy+vPosition*object.zw);"+
+					"    gl_Position = vec4((worldpos-campos)/projection.xy, 0.0, projection.z);"+
 					"}" ;
 					
 				var fShaderQuellcode = "precision mediump float;"+
 					"uniform lowp sampler2D tex0;"+
 					"uniform lowp vec4 color;"+
+					"uniform mediump vec3 lightpos[16];"+
+					"uniform mediump vec3 lightcolor[16];"+
 					"varying mediump vec2 texcoord0;"+
+					"varying mediump vec2 worldpos;"+
 					"void main()"+
 					"{"+
-					"    gl_FragColor = texture2D(tex0, texcoord0)*color;"+
+					"	 gl_FragColor.rgb = vec3(0.0);"+
+					"	 float dist = 0.0;"+
+					"	 for(int i = 0; i < 16; i++)"+
+					"	 {"+
+					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
+					"    	gl_FragColor.rgb += vec3(pow(1.0/(dist*dist*dist*dist), 1.0/2.2));"+
+					"	 }"+
+					"    gl_FragColor.a = 1.0;"+
 					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
 					"}";
 
@@ -128,10 +143,13 @@ var wgShader = new function()
 				id.posloc = wgMain.gl.getAttribLocation(id, "vPosition");
 				id.projloc = wgMain.gl.getUniformLocation(id, "projection");
 				id.objloc = wgMain.gl.getUniformLocation(id, "object");
+				id.camposloc = wgMain.gl.getUniformLocation(id, "campos");
 				id.atlasloc = wgMain.gl.getUniformLocation(id, "atlasinfo");
 				id.inverttexx = wgMain.gl.getUniformLocation(id, "inverttexcoordx");
 				id.texloc = wgMain.gl.getUniformLocation(id, "tex0");
 				id.colorloc = wgMain.gl.getUniformLocation(id, "color");
+				id.lightposloc = wgMain.gl.getUniformLocation(id, "lightpos");
+				id.lightcolorloc = wgMain.gl.getUniformLocation(id, "lightcolor");
 				
 				wgResource.addResource("shader_light", id);
 			}

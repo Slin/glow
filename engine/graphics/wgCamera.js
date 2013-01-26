@@ -33,7 +33,8 @@ var wgCamera = new function()
 	
 	this.follow = 0; // Camera follows this wgObject
 	
-	this.set = function(x,y) {
+	this.set = function(x,y)
+	{
 		this.pos.x=x;
 		this.pos.y=y;
 	}
@@ -43,8 +44,8 @@ var wgCamera = new function()
 		if(!this.follow)
 			return;
 		
-		x = this.follow.pos.x;
-		y = this.follow.pos.y;
+		x = this.follow.pos.x+this.follow.size.x*0.5;
+		y = this.follow.pos.y+this.follow.size.y*0.5;
 		
 		this.speed = speed;
 	  

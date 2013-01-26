@@ -27,15 +27,17 @@
 function aLight()
 {
 	this.ent = 0;
-	this.time = 0;
+	this.time = Math.random()*10000.0;
 }
 
-/*aLight.prototype.onInit = function()
+aLight.prototype.onInit = function()
 {
-	this.ent.object.moveToFront();
-}*/
+	
+}
 
 aLight.prototype.onUpdate = function(ts)
 {
-	
+	this.time += ts;
+	var clamp = Math.sin(this.time*0.005)*0.5+0.5;
+	this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 55, 60, 2);
 };

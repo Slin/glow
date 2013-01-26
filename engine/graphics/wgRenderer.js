@@ -29,9 +29,28 @@ var wgRenderer = new function()
     this.first_light = new wgLight();
 	this.texture = 0;
 	this.shader = 0;
+	this.devicePixelRatio = window.devicePixelRatio || 1;
+
+	function setViewport()
+	{
+	  var newWidth = Math.round(wgMain.canvas.clientWidth*this.devicePixelRatio);
+	  var newHeight = Math.round(wgMain.canvas.clientHeight*this.devicePixelRatio);
+
+//	  newWidth = Math.clamp(newWidth, 1, 20000);
+//	  newHeight = Math.clamp(newHeight, 1, 20000);
+
+	  if (wgMain.canvas.width !== newWidth || wgMain.canvas.height !== newHeight) {
+	    canvassizex = wgMain.canvas.width = newWidth;
+	    canvassizey = wgMain.canvas.height = newHeight;
+
+	    wgMain.gl.viewport(0, 0, newWidth, newHeight);
+	  }
+	}
 
     this.render = function(ts)
     {
+    	setViewport();
+
         // Hintergrund loeschen
         wgMain.gl.clearDepth(1.0);
         wgMain.gl.clearColor(0.5, 0.7, 0.8, 1.0);
@@ -40,6 +59,21 @@ var wgRenderer = new function()
         wgMain.gl.blendFunc(wgMain.gl.ONE, wgMain.gl.ONE_MINUS_SRC_ALPHA);
         wgMain.gl.enable(wgMain.gl.BLEND);
         wgMain.gl.disable(wgMain.gl.DEPTH_TEST);
+
+        var lightposlist = [];
+        var light = this.first_light.next;
+        while(light != 0)
+        {
+        	lightposlist.push(light.pos.x);
+        	lightposlist.push(light.pos.y);
+        	lightposlist.push(light.range);
+        	light = light.next;
+        }
+        while(lightposlist.length < 16*3)
+        {
+        	lightposlist.push(0.0);
+        }
+        var lightpos = new Float32Array(lightposlist);
         
         var tempobj = wgRenderer.first_obj.next;
 		var counter = 0;
@@ -75,12 +109,18 @@ var wgRenderer = new function()
 			}
             
             wgMain.gl.uniform3f(tempobj.material.shader.projloc, canvassizex, canvassizey, scalefactor/2.0);
-            wgMain.gl.uniform4f(tempobj.material.shader.objloc, pos.x, pos.y, tempobj.size.x, tempobj.size.y);
-            
+            wgMain.gl.uniform4f(tempobj.material.shader.objloc, tempobj.pos.x, tempobj.pos.y, tempobj.size.x, tempobj.size.y);
+            wgMain.gl.uniform2f(tempobj.material.shader.camposloc, wgCamera.pos.x, wgCamera.pos.y);
+
             wgMain.gl.uniform4f(tempobj.material.shader.atlasloc, tempobj.material.atlas.width, tempobj.material.atlas.height, tempobj.material.atlas.posx, tempobj.material.atlas.posy);
             wgMain.gl.uniform1f(tempobj.material.shader.inverttexx, tempobj.material.inverttexx);
 			wgMain.gl.uniform4f(tempobj.material.shader.colorloc, tempobj.material.color.r, tempobj.material.color.g, tempobj.material.color.b, tempobj.material.color.a);
 			
+			if(!(tempobj.material.shader.lightposloc === undefined) && this.first_light.next != 0)
+			{
+				wgMain.gl.uniform3fv(tempobj.material.shader.lightposloc, lightpos);
+			}
+
             wgMain.gl.bindBuffer(wgMain.gl.ARRAY_BUFFER, tempobj.mesh);
             wgMain.gl.vertexAttribPointer(tempobj.material.shader.posloc, 2, wgMain.gl.FLOAT, false, 0, 0);
             wgMain.gl.enableVertexAttribArray(tempobj.material.shader.posloc);

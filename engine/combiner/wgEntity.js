@@ -48,7 +48,7 @@ wgEntity.prototype.addEntity = function(texfile, act, shader, mode)
 	temp.prev = this;
     this.next = temp;
 	
-	temp.object = wgRenderer.first_obj.addObject(texfile, mode);
+	temp.object = wgRenderer.first_obj.addObject(texfile, shader, mode);
 	temp.action = act;
 	temp.action.ent = temp;
 	if(temp.action && temp.action.onInit)
@@ -74,6 +74,11 @@ wgEntity.prototype.addLight = function(act)
 		temp.action.onInit();
 	}
 	return temp;
+};
+
+wgEntity.prototype.createLight = function()
+{
+	this.light = wgRenderer.first_light.addLight();
 };
 
 wgEntity.prototype.destroy = function() 

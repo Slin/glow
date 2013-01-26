@@ -37,6 +37,9 @@ function aPlayer()
 aPlayer.prototype.onInit = function()
 {
 	wgCamera.follow = this.ent.object;
+    this.ent.object.size.x = 128;
+    this.ent.object.size.y = 128;
+    this.ent.createLight();
 	this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
 	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
 }
@@ -48,6 +51,11 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 
     this.updateInput(timeStamp);
     this.updateCameraPosition(timeStamp);
+
+    this.ent.light.pos.x = this.ent.object.pos.x+this.ent.object.size.x*0.5;
+    this.ent.light.pos.y = this.ent.object.pos.y+this.ent.object.size.y*0.5;
+    var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
+    this.ent.light.range = $.easing.easeInOutElastic(this.ent.light.range, clamp, 40, 60, 2);
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.

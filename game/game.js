@@ -88,8 +88,17 @@ function main()
     
 	wgMain.first_ent.addEntity("game/player2.png", 0);
 	wgMain.first_ent.next.object.pos.x = 256;
-	wgMain.first_ent.addLight(new aLight());
 
+	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel(), "light");
+
+
+	var light = wgMain.first_ent.addLight(new aLight());
+	light.light.pos.x = 200;
+	light.light.pos.y = 400;
+
+	light = wgMain.first_ent.addLight(new aLight());
+	light.light.pos.x = 200;
+	light.light.pos.y = 1000;
     
 	
 //	wgAudio.playAudio("song1", 1);
