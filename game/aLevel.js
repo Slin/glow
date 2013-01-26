@@ -1,1 +1,1 @@
-function aLevel(){	}aLevel.prototype.onInit = function(){	this.ent.object.size.x = 4096;	this.ent.object.size.y = 4096;	this.ent.object.pos.x = -500;	this.ent.object.pos.y = -500;}aLevel.prototype.onUpdate = function(ts){	}
+function aLevel(){	}aLevel.prototype.onInit = function(){	this.ent.object.size.x = 4096;	this.ent.object.size.y = 4096;	this.ent.object.pos.x = -canvassizex / 2;	this.ent.object.pos.y = -canvassizey / 2;}aLevel.prototype.onUpdate = function(ts){	}

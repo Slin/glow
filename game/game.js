@@ -30,14 +30,11 @@
 var gGlobals = new function()
 {
 	this.player = 0;
+    this.background = null;
+    
 	this.cursorposx = 0;
 	this.cursorposy = 0;
 };
-
-
-
-
-
 
 var musicplaying = "song1";
 function toggleMusic()
@@ -52,7 +49,6 @@ function toggleMusic()
 		musicplaying = "song1";
 	}
 }
-
 
 var audioplaying = 1;
 function toggleSound()
@@ -84,7 +80,8 @@ function main()
 
 
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
-	
+	gGlobals.background = wgMain.first_ent.next;
+    
     // The player entity.
     wgMain.first_ent.addEntity("game/player3.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;

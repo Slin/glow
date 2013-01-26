@@ -47,10 +47,11 @@ var wgCamera = new function()
 		y = this.follow.pos.y;
 		
 		this.speed = speed;
-	        
-		var diffx = x-this.pos.x+(200*this.dir);
-		var diffy = y-this.pos.y+this.look;
-		
+	  
+        // Always keep inside the level.
+        x = Math.min(Math.max(x, 0), gGlobals.background.object.size.x - canvassizex);
+        y = Math.min(Math.max(y, 0), gGlobals.background.object.size.y - canvassizey);
+        
         this.pos.x = x;
         this.pos.y = y;
     }
