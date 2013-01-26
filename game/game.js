@@ -75,19 +75,21 @@ function gameevent(ts)
 
 function loadLevel1()
 {
-	wgMain.first_ent.addEntity("game/textures/stage_1_basic.png", new aLevel());
+	wgMain.first_ent.addEntity("game/textures/stage_2_collision.png", new aLevel());
 	gGlobals.background = wgMain.first_ent.next;
+
+	wgMain.first_ent.addEntity("game/textures/stage_2_asset.png", new aLevel());
     
     // The player entity.
     wgMain.first_ent.addEntity("game/textures/player3_transparent.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
 
 
-	var light = wgMain.first_ent.addEntity("game/textures/player2.png", new aLight({x: 832, y: 532}));
+	var light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 928, y: 680}));
 	light.object.pos.x = 800;
 	light.object.pos.y = 500;
 
-	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 1732, y: 332}));
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 1828, y: 480}));
 	light.object.pos.x = 1700;
 	light.object.pos.y = 300;
 
@@ -98,13 +100,19 @@ function loadLevel1()
 	{
 		x = Math.random()*3000+500;
 		y = Math.random()*3000+500;
-		light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: x+32, y: y+32}));
+		light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: x+128, y: y+180}));
 		light.object.pos.x = x;
 		light.object.pos.y = y;
 	}
 
+	var ent = wgMain.first_ent.addEntity("game/textures/spider.png", new aSpider());
+	ent.object.pos.x = 800;
+	ent.object.pos.y = 3630;
+	ent.object.rot = Math.PI-0.13;
 
-	wgMain.first_ent.addEntity("game/player2.png", new aLevel(), "light");
+	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel());
+
+	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
 }
 
 function destroyLevel()
@@ -125,7 +133,7 @@ function main()
 	loadLevel1();
     
 	
-//	wgAudio.playAudio("song1", 1);
+	wgAudio.playAudio("ambient", 1);
 
 
 	wgMain.mainLoop();

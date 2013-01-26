@@ -1,0 +1,1 @@
+function aSpider(){	}aSpider.prototype.onInit = function(){	this.ent.object.size.x = 256;	this.ent.object.size.y = 256;}aSpider.prototype.onUpdate = function(ts){//	this.ent.object.pos.x = -canvassizex/2*scalefactor;//	this.ent.object.pos.y = -canvassizey/2*scalefactor;}

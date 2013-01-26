@@ -45,7 +45,7 @@ var wgShader = new function()
 			if(!wgResource.getResource("shader_base"))
 			{
 				var vShaderQuellcode = "attribute vec2 vPosition;"+
-					"uniform vec3 projection;"+
+					"uniform vec4 projection;"+
 					"uniform vec4 object;"+
 					"uniform vec2 campos;"+
 					"uniform vec4 atlasinfo;"+
@@ -57,7 +57,10 @@ var wgShader = new function()
 					"	if(inverttexcoordx > 0.1)"+
 					"		texcoord0.x = 1.0-texcoord0.x;"+
 					"    texcoord0 = texcoord0*atlasinfo.xy+atlasinfo.zw;"+
-					"    gl_Position = vec4((object.xy-campos+vPosition*object.zw)/projection.xy, 0.0, projection.z);"+
+					"	 vec2 pos = vPosition-vec2(0.5);"+
+					"	 pos = vec2(cos(projection.w)*pos.x-sin(projection.w)*pos.y, sin(projection.w)*pos.x+cos(projection.w)*pos.y);"+
+					"	 pos += vec2(0.5);"+
+					"    gl_Position = vec4((object.xy-campos+pos*object.zw)/projection.xy, 0.0, projection.z);"+
 					"}" ;
 					
 				var fShaderQuellcode = "precision mediump float;"+
@@ -96,7 +99,7 @@ var wgShader = new function()
 			if(!wgResource.getResource("shader_light"))
 			{
 				var vShaderQuellcode = "attribute vec2 vPosition;"+
-					"uniform vec3 projection;"+
+					"uniform vec4 projection;"+
 					"uniform vec4 object;"+
 					"uniform vec2 campos;"+
 					"uniform vec4 atlasinfo;"+

@@ -40,6 +40,12 @@ aLight.prototype.onInit = function()
 	this.ent.light.color.g = Math.random();
 	this.ent.light.color.b = Math.random();
 	this.ent.light.range = 0;
+
+	this.ent.object.size.x = 256;
+	this.ent.object.size.y = 256;
+	this.ent.object.material.initAtlas(2, 1, 512, 256, 512, 256);
+	this.ent.object.material.setAtlas(1);
+	this.ent.object.rot = Math.random()*2*Math.PI;
 }
 
 aLight.prototype.onUpdate = function(ts)
@@ -58,6 +64,7 @@ aLight.prototype.onUpdate = function(ts)
 		if(!this.active && dist < 10000)
 		{
 			wgAudio.playSound("activate");
+			this.ent.object.material.setAtlas(0);
 			this.active = true;
 		}
 	}

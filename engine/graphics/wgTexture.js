@@ -67,7 +67,7 @@ var wgTexture = new function()
 				
 				if(wgTexture.isPowerOfTwo(image.width) && wgTexture.isPowerOfTwo(image.height))
 				{
-					wgMain.gl.texParameteri(wgMain.gl.TEXTURE_2D, wgMain.gl.TEXTURE_WRAP_S, wgMain.gl.REPEAT);
+					wgMain.gl.texParameteri(wgMain.gl.TEXTURE_2D, wgMain.gl.TEXTURE_WRAP_S, wgMain.gl.CLAMP_TO_EDGE);
 					wgMain.gl.texParameteri(wgMain.gl.TEXTURE_2D, wgMain.gl.TEXTURE_WRAP_T, wgMain.gl.CLAMP_TO_EDGE);
 				}else
 				{

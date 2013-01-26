@@ -110,5 +110,7 @@ var wgMain = new function()
         wgMain.gameeventhandler = event;
 
         this.canvas.addEventListener("click", toggleFullScreen);
+
+        wgRenderer.mesh = wgMesh.getMesh();
     };
 };

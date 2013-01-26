@@ -31,6 +31,8 @@ var wgRenderer = new function()
 	this.shader = 0;
 	this.devicePixelRatio = window.devicePixelRatio || 1;
 
+	this.mesh = 0;
+
 	function setViewport()
 	{
 	  var newWidth = Math.round(wgMain.canvas.clientWidth*this.devicePixelRatio);
@@ -115,7 +117,7 @@ var wgRenderer = new function()
 				this.texture = tempobj.material.texture;
 			}
             
-            wgMain.gl.uniform3f(tempobj.material.shader.projloc, canvassizex, canvassizey, scalefactor/2.0);
+            wgMain.gl.uniform4f(tempobj.material.shader.projloc, canvassizex, canvassizey, scalefactor/2.0, tempobj.rot);
             wgMain.gl.uniform4f(tempobj.material.shader.objloc, tempobj.pos.x, tempobj.pos.y, tempobj.size.x, tempobj.size.y);
             wgMain.gl.uniform2f(tempobj.material.shader.camposloc, wgCamera.pos.x, wgCamera.pos.y);
 
@@ -129,7 +131,7 @@ var wgRenderer = new function()
 				wgMain.gl.uniform3fv(tempobj.material.shader.lightcolorloc, lightcol);
 			}
 
-            wgMain.gl.bindBuffer(wgMain.gl.ARRAY_BUFFER, tempobj.mesh);
+     //       wgMain.gl.bindBuffer(wgMain.gl.ARRAY_BUFFER, this.mesh);
             wgMain.gl.vertexAttribPointer(tempobj.material.shader.posloc, 2, wgMain.gl.FLOAT, false, 0, 0);
             wgMain.gl.enableVertexAttribArray(tempobj.material.shader.posloc);
             wgMain.gl.drawArrays(wgMain.gl.TRIANGLES, 0, 6);
