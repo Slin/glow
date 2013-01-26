@@ -25,8 +25,12 @@
 function aPlayer()
 {
     this.SpeedFactor = 0.02;
-
-	this.ent = 0;
+    this.VelocityUpdateTime = 200;
+    
+    this.velocity = { x: 0, y: 0};
+    this.deltaVelocityUpdate = 0;
+    
+    this.ent = 0;
     this.deltaTime = 0;
 }
 
@@ -40,20 +44,33 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 
 aPlayer.prototype.updateInput = function(timeStamp)
 {
+    this.deltaVelocityUpdate += timeStamp;
+
     if (wgKeyboard.left)
     {
-       this.ent.object.pos.x -= timeStamp * this.SpeedFactor;
+       this.velocity.x -= timeStamp;
     }
     if (wgKeyboard.right)
     {
-       this.ent.object.pos.x += timeStamp * this.SpeedFactor;
+       this.velocity.x += timeStamp;
     }
     if (wgKeyboard.down)
     {
-       this.ent.object.pos.y -= timeStamp * this.SpeedFactor;
+       this.velocity.y -= timeStamp;
     }
     if (wgKeyboard.up)
     {
-       this.ent.object.pos.y += timeStamp * this.SpeedFactor;
+       this.velocity.y += timeStamp;
+    }
+           
+    this.ent.object.pos.x += this.SpeedFactor * this.velocity.x;
+    this.ent.object.pos.y += this.SpeedFactor * this.velocity.y;
+    
+    while (this.deltaVelocityUpdate > this.VelocityUpdateTime)
+    {
+        this.deltaVelocityUpdate -= this.VelocityUpdateTime;
+         
+        this.velocity.x = this.velocity.x * 0.5;
+        this.velocity.y = this.velocity.y * 0.5;
     }
 }
