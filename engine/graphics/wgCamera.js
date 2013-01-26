@@ -38,7 +38,8 @@ var wgCamera = new function()
 		this.pos.y=y;
 	}
 	
-    this.update = function(speed) {
+    this.update = function(speed) 
+    {
 		if(!this.follow)
 			return;
 		
@@ -46,42 +47,11 @@ var wgCamera = new function()
 		y = this.follow.pos.y;
 		
 		this.speed = speed;
-	
-        if(wgKeyboard.left)
-          this.dir=-1;
-        
-        if(wgKeyboard.right)
-          this.dir=1;
-		
-		if(wgKeyboard.up || wgKeyboard.space)
-          this.look=0;
-        
-        if(wgKeyboard.down&&!wgKeyboard.up&&!wgKeyboard.space)
-          this.look=-200;
-				
+	        
 		var diffx = x-this.pos.x+(200*this.dir);
 		var diffy = y-this.pos.y+this.look;
 		
-		if(diffx>0&&diffx<1||diffx<0&&diffx>-1)
-			diffx = 0;
-			
-		if(diffx>0)
-			this.pos.x += diffx/100*this.speed*wgTimer.timestep;
-		else if(diffx<0)
-			this.pos.x += diffx/100*this.speed*wgTimer.timestep;
-		
-		if(diffy>0)
-			this.pos.y += diffy/100*this.speedy*wgTimer.timestep;
-		else if(diffy<-100)
-			this.pos.y += diffy/100*this.speedy*wgTimer.timestep;
-		
-		if(this.pos.x <= this.lvlbl+600)		// left border
-			this.pos.x = this.lvlbl+600;
-		else if(this.pos.x >= this.lvlbr+600)	// right border
-			this.pos.x = this.lvlbr+600;
-		
-		if(this.pos.y <= this.lvlbd+400)		// left border
-			this.pos.y = this.lvlbd+400;
-		
+        this.pos.x = x;
+        this.pos.y = y;
     }
 };
