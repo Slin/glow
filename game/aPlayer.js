@@ -26,10 +26,17 @@ function aPlayer(levelchange)
 {
     this.SpeedFactor = 0.02;
     this.VelocityUpdateTime = 50;
+    this.RadarUpdateTime = 20;
     this.velocityReductionFactor = 0.95;
+    
+    this.radarFeedback = 0;
+    
+    // This value indicates how near you are to an obstacle (range 0..1).
+    this.radarFeedbackNormalized = 0;
     
     this.velocity = { x: 0, y: 0};
     this.deltaVelocityUpdate = 0;
+    this.deltaRadarUpdate = 0;
     
     this.ent = 0;
     this.deltaTime = 0;
@@ -53,10 +60,10 @@ aPlayer.prototype.onInit = function()
 	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
 }
 
-// timeStamp: Elapsed time scince last render call in millisecons.
-aPlayer.prototype.onUpdate = function(timeStamp)
+// timeStep: Elapsed time scince last render call in millisecons.
+aPlayer.prototype.onUpdate = function(timeStep)
 {
-    this.deltaTime += timeStamp;
+    this.deltaTime += timeStep;
 
 	if (!this.isAlive)
     {
@@ -80,13 +87,12 @@ aPlayer.prototype.onUpdate = function(timeStamp)
         
     this.ent.light.color = isColliding ? {r: 0.632, g: 0.0, b: 0.0} : {r: 0.632, g: 1.0, b: 0.0};
     
-    if (isColliding)
-    {
-        this.die();
-    }
+    this.updateInput(timeStep);
+    this.updateCameraPosition(timeStep);
+    this.updateCollision(timeStep);
     
     this.ent.object.pos.x = this.pos.x;
-    this.ent.object.pos.y = this.pos.y; //+Math.sin(this.deltaTime*0.05)*3;
+    this.ent.object.pos.y = this.pos.y + Math.sin(this.deltaTime*0.05)*3;
        
     if(this.ent.object.material.inverttexx == 1)
     {
@@ -97,31 +103,32 @@ aPlayer.prototype.onUpdate = function(timeStamp)
         this.ent.light.pos.x = this.ent.object.pos.x+8;
     }
     this.ent.light.pos.y = this.ent.object.pos.y+30;
+  
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
  
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.
-aPlayer.prototype.updateInput = function(timeStamp)
+aPlayer.prototype.updateInput = function(timeStep)
 {
-    this.deltaVelocityUpdate += timeStamp;
+    this.deltaVelocityUpdate += timeStep;
 
     if (wgKeyboard.left)
     {
-       this.velocity.x -= timeStamp;
+       this.velocity.x -= timeStep;
     }
     if (wgKeyboard.right)
     {
-       this.velocity.x += timeStamp;
+       this.velocity.x += timeStep;
     }
     if (wgKeyboard.down)
     {
-       this.velocity.y -= timeStamp;
+       this.velocity.y -= timeStep;
     }
     if (wgKeyboard.up)
     {
-       this.velocity.y += timeStamp;
+       this.velocity.y += timeStep;
     }
            
     this.pos.x += this.SpeedFactor * this.velocity.x;
@@ -133,6 +140,12 @@ aPlayer.prototype.updateInput = function(timeStamp)
          
         this.velocity.x = this.velocity.x * this.velocityReductionFactor;
         this.velocity.y = this.velocity.y * this.velocityReductionFactor;
+        
+        var vectorLength = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+        
+        this.moveDirection = {
+            x: this.velocity.x / vectorLength, 
+            y: this.velocity.y / vectorLength };
     }
     
     this.ent.object.material.inverttexx = this.velocity.x < 0 ? 1 : 0;
@@ -152,9 +165,9 @@ aPlayer.prototype.gotoExit = function(timestep)
 }
 
 // This method moves the camera.
-aPlayer.prototype.updateCameraPosition = function(timeStamp)
+aPlayer.prototype.updateCameraPosition = function(timeStep)
 {
-    wgCamera.update(timeStamp);
+    wgCamera.update(timeStep);
 }
 
 // The player collided with the environment.
@@ -164,3 +177,52 @@ aPlayer.prototype.die = function()
     this.ent.object.material.setAnimation(8, 15, 0.4, 0);
 }
 
+aPlayer.prototype.updateCollision = function(timeStep)
+{
+    this.deltaRadarUpdate += timeStep;
+
+    var origin = 
+        {
+            x: Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2),
+            y: Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
+        };
+    
+    var length = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+
+    // Get a point placed in front of the move direciton.
+    var pickPosition = 
+        {
+            x: origin.x + (this.velocity.x / length * Math.min(length, this.ent.object.size.x * 4)) ,
+            y: origin.y + (this.velocity.y / length * Math.min(length, this.ent.object.size.y * 4)) 
+        };     
+    
+    var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
+    
+    if (isColliding)
+    {
+        this.die();
+    }
+
+    var isRadarColliding = gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y);
+    
+    while (this.deltaRadarUpdate > this.RadarUpdateTime)
+    {
+        this.deltaRadarUpdate -= this.RadarUpdateTime;
+
+        if (isRadarColliding)
+        {
+            this.radarFeedback += 1;
+        }
+
+        this.radarFeedback *= this.velocityReductionFactor;
+    }
+    
+    //this.ent.light.pos.x = pickPosition.x;
+    //this.ent.light.pos.y = pickPosition.y;
+    
+    this.radarStrengthNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
+        
+    //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
+    //console.log(easeRes);
+    //this.ent.light.color = easeRes;
+}
