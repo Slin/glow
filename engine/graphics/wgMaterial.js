@@ -53,7 +53,7 @@ wgMaterial.prototype.setAtlas = function(id)
 	this.animation.curr = id;
 
 	this.atlas.posx = id%this.atlas.columns;
-	this.atlas.posy = Math.floor(id/this.atlas.columns);
+	this.atlas.posy = this.atlas.rows-Math.floor(id/this.atlas.columns)-1;
 	
 	this.atlas.posx *= this.atlas.width;
 	this.atlas.posy *= this.atlas.height;

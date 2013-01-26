@@ -34,6 +34,8 @@ var gGlobals = new function()
     
 	this.cursorposx = 0;
 	this.cursorposy = 0;
+
+	this.numlights = 0;
 };
 
 var musicplaying = "song1";
@@ -69,7 +71,10 @@ function toggleSound()
 
 function gameevent(ts)
 {
-
+	if(gGlobals.numlights == 0)
+	{
+		wgCamera.follow.exit = true;
+	}
 }
 
 
@@ -81,29 +86,18 @@ function loadLevel1()
 	wgMain.first_ent.addEntity("game/textures/stage_1_asset.png", new aLevel());
     
     // The player entity.
-    wgMain.first_ent.addEntity("game/textures/player3_transparent.png", new aPlayer());
-    gGlobals.player = wgMain.first_ent.next;
+    gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer(function(){destroyLevel(); loadLevel2();}));
+    gGlobals.player.action.pos.x = 813;
+    gGlobals.player.action.pos.y = 3230;
 
+	var light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 568, y: 536}));
+	light.object.pos.x = 468;
+	light.object.pos.y = 325;
 
-	var light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 928, y: 680}));
-	light.object.pos.x = 800;
-	light.object.pos.y = 500;
-
-	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 1828, y: 480}));
-	light.object.pos.x = 1700;
-	light.object.pos.y = 300;
-
-
-	var x = 0;
-	var y = 0;
-	for(var i = 3; i < 8; i++)
-	{
-		x = Math.random()*3000+500;
-		y = Math.random()*3000+500;
-		light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: x+128, y: y+180}));
-		light.object.pos.x = x;
-		light.object.pos.y = y;
-	}
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 3042, y: 3724}));
+//	light.object.material.inverttexx = true;
+	light.object.pos.x = 2942;
+	light.object.pos.y = 3508;
 
 	var ent = wgMain.first_ent.addEntity("game/textures/spider.png", new aSpider());
 	ent.object.pos.x = 800;
@@ -123,7 +117,7 @@ function loadLevel2()
 	wgMain.first_ent.addEntity("game/textures/stage_2_asset.png", new aLevel());
     
     // The player entity.
-    wgMain.first_ent.addEntity("game/textures/player3_transparent.png", new aPlayer());
+    wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
     gGlobals.player = wgMain.first_ent.next;
 
 
@@ -164,6 +158,8 @@ function destroyLevel()
 		wgMain.first_ent.next.destroy();
 	}
 	wgMain.first_ent = new wgEntity();
+
+	gGlobals.numlights = 0;
 }
 
 

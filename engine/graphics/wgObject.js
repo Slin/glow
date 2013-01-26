@@ -91,8 +91,8 @@ wgObject.prototype.getPixel = function(x, y)
     var stepSize = wgTexture.regionFactor * wgTexture.bytesPerChannel;
     var rowLength = this.material.imageResource.texture.size.x / stepSize;
     var rowHeight = this.material.imageResource.texture.size.y / stepSize;
-    var leftOffset = x / scalefactor / stepSize;
-    var topOffset = rowHeight - (y / scalefactor / stepSize);
+    var leftOffset = x / 2 / stepSize;
+    var topOffset = rowHeight - (y / 2 / stepSize);
     
     var isBlocked = data.data[Math.floor(leftOffset) + rowLength * Math.floor(topOffset)];
     

@@ -57,6 +57,8 @@ var wgRenderer = new function()
         wgMain.gl.clearDepth(1.0);
         wgMain.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         wgMain.gl.clear(wgMain.gl.COLOR_BUFFER_BIT|wgMain.gl.DEPTH_BUFFER_BIT);
+
+//        wgMain.gl.colorMask(true, true, true, false);
         
         wgMain.gl.blendFunc(wgMain.gl.ONE, wgMain.gl.ONE_MINUS_SRC_ALPHA);
         wgMain.gl.enable(wgMain.gl.BLEND);

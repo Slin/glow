@@ -22,7 +22,7 @@
 //	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
-function aPlayer()
+function aPlayer(levelchange)
 {
     this.SpeedFactor = 0.02;
     this.VelocityUpdateTime = 50;
@@ -35,6 +35,8 @@ function aPlayer()
     this.deltaTime = 0;
     
     this.isAlive = true;
+    this.exit = false;
+    this.levelchange = levelchange;
 
     this.pos = {x: 400, y: 400};
 }
@@ -47,7 +49,7 @@ aPlayer.prototype.onInit = function()
     this.ent.object.size.y = 128;
     this.ent.createLight();
     this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
-	this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
+	this.ent.object.material.initAtlas(4, 4, 1024, 1024, 1024, 1024);
 	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
 }
 
@@ -56,12 +58,19 @@ aPlayer.prototype.onUpdate = function(timeStamp)
 {
     this.deltaTime += timeStamp;
 
-    if (!this.isAlive)
+	if (!this.isAlive)
     {
         return;
     }
-    
-    this.updateInput(timeStamp);
+
+    if(this.exit == false)
+    {
+        this.updateInput(timeStamp);
+    }
+    else
+    {
+        this.gotoExit(timeStamp);
+    }
     this.updateCameraPosition(timeStamp);
         
     var isColliding = gGlobals.background.object.getPixel(
@@ -127,7 +136,19 @@ aPlayer.prototype.updateInput = function(timeStamp)
     }
     
     this.ent.object.material.inverttexx = this.velocity.x < 0 ? 1 : 0;
-    
+}
+
+aPlayer.prototype.gotoExit = function(timestep)
+{
+    var distx = wgCamera.pos.x-this.pos.x;
+    var disty = wgCamera.pos.y-this.pos.y;
+    this.pos.x += distx*timestep*0.001*0.5;
+    this.pos.y += disty*timestep*0.001*0.5;
+
+    if(distx*distx+disty*disty < 25)
+    {
+        this.levelchange();
+    }
 }
 
 // This method moves the camera.
@@ -139,6 +160,7 @@ aPlayer.prototype.updateCameraPosition = function(timeStamp)
 // The player collided with the environment.
 aPlayer.prototype.die = function()
 {
-    this.isAlive = false; 
+    this.isAlive = false;
+    this.ent.object.material.setAnimation(8, 15, 0.4, 0);
 }
 

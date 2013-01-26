@@ -30,6 +30,8 @@ function aLight(lightpos)
 	this.time = Math.random()*10000.0;
 	this.active = false;
 	this.lightpos = lightpos;
+
+	gGlobals.numlights += 1;
 }
 
 aLight.prototype.onInit = function()
@@ -45,7 +47,7 @@ aLight.prototype.onInit = function()
 	this.ent.object.size.y = 256;
 	this.ent.object.material.initAtlas(2, 1, 512, 256, 512, 256);
 	this.ent.object.material.setAtlas(1);
-	this.ent.object.rot = Math.random()*2*Math.PI;
+//	this.ent.object.rot = Math.random()*2*Math.PI;
 }
 
 aLight.prototype.onUpdate = function(ts)
@@ -63,6 +65,7 @@ aLight.prototype.onUpdate = function(ts)
 		var dist = distx*distx+disty*disty;
 		if(!this.active && dist < 10000)
 		{
+			gGlobals.numlights -= 1;
 			wgAudio.playSound("activate");
 			this.ent.object.material.setAtlas(0);
 			this.active = true;
