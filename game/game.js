@@ -36,6 +36,12 @@ var gGlobals = new function()
 	this.cursorposy = 0;
 
 	this.numlights = 0;
+
+	this.reload = false;
+	this.nextlevel = false;
+
+	this.currlevelfunc = 0;
+	this.nextlevelfunc = 0;
 };
 
 var musicplaying = "song1";
@@ -75,6 +81,17 @@ function gameevent(ts)
 	{
 		wgCamera.follow.exit = true;
 	}
+	if(gGlobals.reload == true)
+	{
+		gGlobals.reload = false;
+		setTimeout(function(){destroyLevel(); gGlobals.currlevelfunc();}, 2000);
+	}
+	if(gGlobals.nextlevel == true)
+	{
+		gGlobals.nextlevel = false;
+		destroyLevel();
+		gGlobals.nextlevelfunc();
+	}
 }
 
 
@@ -86,7 +103,7 @@ function loadLevel1()
 	wgMain.first_ent.addEntity("game/textures/stage_1_asset.png", new aLevel());
     
     // The player entity.
-    gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer(function(){destroyLevel(); loadLevel2();}));
+    gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
     gGlobals.player.action.pos.x = 813;
     gGlobals.player.action.pos.y = 3230;
 
@@ -107,6 +124,9 @@ function loadLevel1()
 	wgMain.first_ent.addEntity("game/textures/stage_1_fog.png", new aLevel());
 
 	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
+
+	gGlobals.currlevelfunc = loadLevel1;
+	gGlobals.nextlevelfunc = loadLevel2;
 }
 
 function loadLevel2()
@@ -149,10 +169,18 @@ function loadLevel2()
 	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel());
 
 	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
+
+	gGlobals.currlevelfunc = loadLevel2;
+	gGlobals.nextlevelfunc = loadLevel1;
 }
 
 function destroyLevel()
 {
+	gGlobals.player = 0;
+	gGlobals.background = 0;
+	wgCamera.follow = 0;
+	wgCamera.followobj = 0;
+
 	while(wgMain.first_ent.next!=0)
 	{
 		wgMain.first_ent.next.destroy();

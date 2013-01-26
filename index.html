@@ -36,25 +36,34 @@
         <script src="game/aSpider.js" type="text/javascript"></script>
         <script src="game/game.js" type="text/javascript"></script>
 		
-		<audio id="activate" preload="auto">
-			<source src="game/audio/light.wav" type="audio/x-wav"/>
+		<audio id="flower" preload="auto">
+			<source src="game/audio/flower.mp3" type="audio/mpeg"/>
+            <source src="game/audio/flower.ogg" type="audio/ogg"/>
 		</audio>
-		<audio id="ambient" preload="auto">
+		<audio loop id="ambient" preload="auto">
 			<source src="game/audio/ambient.mp3" type="audio/mpeg"/>
 			<source src="game/audio/ambient.ogg" type="audio/ogg"/>
 		</audio>
-<!--		<audio id="jump" preload="auto">
-			<source src="game/jump.mp3" type="audio/mpeg"/>
-			<source src="game/jump.ogg" type="audio/ogg"/>
-		</audio>
-		<audio id="collect" preload="auto">
-			<source src="game/collect.mp3" type="audio/mpeg"/>
-			<source src="game/collect.ogg" type="audio/ogg"/>
-		</audio>
-		<audio id="death" preload="auto">
-			<source src="game/death.mp3" type="audio/mpeg"/>
-			<source src="game/death.ogg" type="audio/ogg"/>
-		</audio> -->
+        <audio id="menu" preload="auto">
+            <source src="game/audio/menu.mp3" type="audio/mpeg"/>
+            <source src="game/audio/menu.ogg" type="audio/ogg"/>
+        </audio>
+        <audio id="bat" preload="auto">
+            <source src="game/audio/bat.mp3" type="audio/mpeg"/>
+            <source src="game/audio/bat.ogg" type="audio/ogg"/>
+        </audio>
+        <audio id="splatter" preload="auto">
+            <source src="game/audio/splatter.mp3" type="audio/mpeg"/>
+            <source src="game/audio/splatter.ogg" type="audio/ogg"/>
+        </audio>
+        <audio id="heartbeat" preload="auto">
+            <source src="game/audio/heartbeat.mp3" type="audio/mpeg"/>
+            <source src="game/audio/heartbeat.ogg" type="audio/ogg"/>
+        </audio>
+        <audio id="singleheartbeat" preload="auto">
+            <source src="game/audio/singleheartbeat.mp3" type="audio/mpeg"/>
+            <source src="game/audio/singleheartbeat.ogg" type="audio/ogg"/>
+        </audio>
     </head>
     <body bgcolor="#CCCCCC" onload="main()" align="center">
 		<canvas id="wgCanvas"></canvas>

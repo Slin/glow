@@ -66,7 +66,7 @@ aLight.prototype.onUpdate = function(ts)
 		if(!this.active && dist < 10000)
 		{
 			gGlobals.numlights -= 1;
-			wgAudio.playSound("activate");
+			wgAudio.playSound("flower");
 			this.ent.object.material.setAtlas(0);
 			this.active = true;
 		}

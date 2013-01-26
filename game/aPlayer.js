@@ -22,7 +22,7 @@
 //	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
-function aPlayer(levelchange)
+function aPlayer()
 {
     this.SpeedFactor = 0.02;
     this.VelocityUpdateTime = 50;
@@ -41,12 +41,14 @@ function aPlayer(levelchange)
     this.pos = {x: 400, y: 400};
     this.ent = 0;
     this.deltaTime = 0;
+    this.heartbeattimer = 0;
     
     // Gameplay variables.
     this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
-    this.levelchange = levelchange;
+
+    this.pos = {x: 400, y: 400};
 }
 
 aPlayer.prototype.onInit = function()
@@ -58,13 +60,23 @@ aPlayer.prototype.onInit = function()
     this.ent.createLight();
     this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
 	this.ent.object.material.initAtlas(4, 4, 1024, 1024, 1024, 1024);
-	this.ent.object.material.setAnimation(0, 7, 0.8, 1);
+	this.ent.object.material.setAnimation(0, 7, 0.6, 1);
+
+    this.ent.object.pos.x = this.pos.x;
+    this.ent.object.pos.y = this.pos.y;
 }
 
 // timeStep: Elapsed time scince last render call in millisecons.
 aPlayer.prototype.onUpdate = function(timeStep)
 {
     this.deltaTime += timeStep;
+
+    this.heartbeattimer += timeStep*(this.radarFeedback+0.1);
+    if(this.heartbeattimer > 10)
+    {
+        this.heartbeattimer = 0;
+        wgAudio.playSound("singleheartbeat");
+    }
 
 	if (!this.isAlive)
     {
@@ -74,6 +86,7 @@ aPlayer.prototype.onUpdate = function(timeStep)
     if(this.exit == false)
     {
         this.updateInput(timeStep);
+        this.updateCollision(timeStep);
     }
     else
     {
@@ -85,12 +98,6 @@ aPlayer.prototype.onUpdate = function(timeStep)
         Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
         Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
         );
-        
-    this.ent.light.color = isColliding ? {r: 0.632, g: 0.0, b: 0.0} : {r: 0.632, g: 1.0, b: 0.0};
-    
-    this.updateInput(timeStep);
-    this.updateCameraPosition(timeStep);
-    this.updateCollision(timeStep);
     
     this.ent.object.pos.x = this.pos.x;
     this.ent.object.pos.y = this.pos.y + Math.sin(this.deltaTime*0.05)*3;
@@ -105,9 +112,11 @@ aPlayer.prototype.onUpdate = function(timeStep)
     }
     this.ent.light.pos.y = this.ent.object.pos.y+30;
 
-    var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
-    this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
- 
+    if(this.isAlive == true)
+    {
+        var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
+        this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
+    }
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.
@@ -159,9 +168,9 @@ aPlayer.prototype.gotoExit = function(timestep)
     this.pos.x += distx*timestep*0.001*0.5;
     this.pos.y += disty*timestep*0.001*0.5;
 
-    if(distx*distx+disty*disty < 25)
+    if(distx*distx+disty*disty < 200)
     {
-        this.levelchange();
+        gGlobals.nextlevel = true;
     }
 }
 
@@ -174,8 +183,13 @@ aPlayer.prototype.updateCameraPosition = function(timeStep)
 // The player collided with the environment.
 aPlayer.prototype.die = function()
 {
-    this.isAlive = false;
-    this.ent.object.material.setAnimation(8, 15, 0.4, 0);
+    if(this.isAlive == true)
+    {
+        this.ent.object.material.setAnimation(8, 15, 0.2, 0);
+        this.ent.light.range = 0;
+        gGlobals.reload = true;
+        this.isAlive = false;
+    }
 }
 
 aPlayer.prototype.updateCollision = function(timeStep)
