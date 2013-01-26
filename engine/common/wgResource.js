@@ -32,8 +32,8 @@ var wgResource = new function()
 		return resources[filename];
 	};
 	
-	this.addResource = function(filename, res)
+	this.addResource = function(filename, res, data)
 	{
-		resources[filename] = res;
+		resources[filename] = { texture: res, imageData: data};
 	};
 };

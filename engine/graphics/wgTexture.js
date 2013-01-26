@@ -38,12 +38,22 @@ var wgTexture = new function()
             //erstellen und laden einer Textur...
             var texid = wgMain.gl.createTexture();
 			texid.size = {x: 1, y: 1};
-			wgResource.addResource(filename, texid);
+			wgResource.addResource(filename, texid, null);
 			
             var image = new Image();
             
             image.onload = function()
             {
+                console.log(image);
+                 
+                var img = $(image)[0];
+                var canvas = $('<canvas/>')[0];
+                canvas.width = img.width;
+                canvas.height = img.height;
+                canvas.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+                
+                console.log(canvas.getContext('2d').getImageData(0,0,1,1));
+                
                 wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, texid);
                 wgMain.gl.pixelStorei(wgMain.gl.UNPACK_FLIP_Y_WEBGL, true);
                 
@@ -66,8 +76,7 @@ var wgTexture = new function()
 				}
 				
 				texid.size = {x: image.width, y: image.height};
-                
-				
+                				
                 wgMain.gl.texImage2D(wgMain.gl.TEXTURE_2D, 0, wgMain.gl.RGBA, wgMain.gl.RGBA, wgMain.gl.UNSIGNED_BYTE, image);
                 wgMain.gl.bindTexture(wgMain.gl.TEXTURE_2D, null);
             }
@@ -81,6 +90,6 @@ var wgTexture = new function()
             image.src = filename;
         }
         
-        return wgResource.getResource(filename);
+        return wgResource.getResource(filename).texture;
     };
 };

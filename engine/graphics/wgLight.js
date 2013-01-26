@@ -1,5 +1,5 @@
 //
-//	wgObject.js
+//	wgLight.js
 //	Webgine
 //
 //	Created by Nils Daumann on 30.10.11.

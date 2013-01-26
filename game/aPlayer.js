@@ -71,6 +71,8 @@ aPlayer.prototype.onUpdate = function(timeStamp)
     this.ent.light.pos.y = this.ent.object.pos.y+45;
     var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
     this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
+    
+    //console.log(this.ent.object.getPixel(0,0));
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.
