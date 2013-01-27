@@ -64,6 +64,16 @@ var wgResource = new function()
         resource.imageData = wgTexture.computeBinaryMap(canvas.width, canvas.height, canvas.getContext('2d'));
         resources[filename] = resource;
         
+        document.writeln("LevelData:");
+        document.write("var levelX_collisiondata = {width: ");
+        document.write(resource.imageData.width);
+        document.write(", height: ");
+        document.write(resource.imageData.height);
+        document.write(", data: [");
+        document.write(resource.imageData.data);
+        document.writeln("]};");
+        document.writeln("--------------------");
+
         /*
         var index = 0;
         var line = "";

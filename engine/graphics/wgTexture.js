@@ -57,8 +57,6 @@ var wgTexture = new function()
             }
         }
         
-        //console.log(convertedData);
-        
         return { width: width, height: height, data: convertedData};
     }
     

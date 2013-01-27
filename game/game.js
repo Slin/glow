@@ -97,8 +97,8 @@ function gameevent(ts)
 
 function loadLevel1()
 {
-	wgMain.first_ent.addEntity("game/textures/stage_1_collision.png", new aLevel());
-	gGlobals.background = wgMain.first_ent.next;
+	gGlobals.background = wgMain.first_ent.addEntity("game/textures/stage_1_collision.png", new aLevel());
+	gGlobals.background.object.material.imageResource.imageData = level1_collisiondata;
 
 	wgMain.first_ent.addEntity("game/textures/stage_1_asset.png", new aLevel());
     
@@ -131,8 +131,8 @@ function loadLevel1()
 
 function loadLevel2()
 {
-	wgMain.first_ent.addEntity("game/textures/stage_2_collision.png", new aLevel());
-	gGlobals.background = wgMain.first_ent.next;
+	gGlobals.background = wgMain.first_ent.addEntity("game/textures/stage_2_collision.png", new aLevel());
+	gGlobals.background.object.material.imageResource.imageData = level2_collisiondata;
 
 	wgMain.first_ent.addEntity("game/textures/stage_2_asset.png", new aLevel());
     
@@ -182,14 +182,8 @@ function main()
 {
 	wgMain.initWebgine(gameevent);
 
-
 	loadLevel1();
-    
-	
 	wgAudio.playAudio("ambient", true);
 
-
 	wgMain.mainLoop();
-
-//	document.addEventListener("keydown", function(){destroyLevel}, false);
 }

@@ -28,20 +28,6 @@ var canvassizex = 800;
 var canvassizey = 400;
 var gamemode = 1;
 
-function fullscreen()
-{
-    var el = document.getElementById('wgCanvas');
- 
-    if(el.webkitRequestFullScreen)
-    {
-        el.webkitRequestFullScreen();
-    }
-    else
-    {
-        el.mozRequestFullScreen();
-    }            
-}
-
 function toggleFullScreen() {
   if (!document.fullscreenElement &&    // alternative standard method
       !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
@@ -109,7 +95,7 @@ var wgMain = new function()
         WebGLDebugUtils.makeDebugContext(this.gl, this.throwOnGLError);
         wgMain.gameeventhandler = event;
 
-        this.canvas.addEventListener("click", toggleFullScreen);
+        document.addEventListener("keydown", function(event){if(event.keyCode == 13 || event.keyCode == 70){toggleFullScreen();}});
 
         wgRenderer.mesh = wgMesh.getMesh();
     };

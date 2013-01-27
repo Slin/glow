@@ -230,6 +230,7 @@ aPlayer.prototype.updateCollision = function(timeStep)
 {
     this.deltaRadarUpdate += timeStep;
     var length = Math.sqrt(this.velocity.x * this.velocity.x + this.velocity.y * this.velocity.y);
+    if(length == 0) length = 1.0;
     var velocityNorm = { x: this.velocity.x / length, y: this.velocity.y / length };
     
     var origin = 
