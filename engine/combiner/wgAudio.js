@@ -29,8 +29,9 @@ var wgAudio = new function()
 	this.channels = new Array();
 	for(i = 0; i < this.maxchannels; i++)
 	{
-		this.channels[i] = new Audio();
-		this.channels[i].finished = -1;
+		var audio = new Audio();
+		audio.finished = -1;
+		this.channels.push(audio);
 	}
 	
 	function loopAudio()
@@ -86,16 +87,18 @@ var wgAudio = new function()
 		var time = new Date();
 		for(i = 0; i < this.channels.length; i++)
 		{
+			var i = 0;
 			if(this.channels[i].finished < time.getTime())
 			{
 				var player = document.getElementById(name);
 				var sources = player.getElementsByTagName("source");
 				var source = 0;
-				for(i = 0; i < sources.length; i++)
+				for(var n = 0; n < sources.length; n++)
 				{
-					if(player.canPlayType(sources[i].type))
+					if(player.canPlayType(sources[n].type))
 					{
-						source = sources[i].src;
+						source = sources[n].src;
+						break;
 					}
 				}
 				

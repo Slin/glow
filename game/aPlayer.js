@@ -47,7 +47,7 @@ function aPlayer()
     this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
-    
+
     this.PoisonDuration = 5000;
     this.poisonedTimeLeft = 0;
     this.PositiveColor = {r: 0.632, g: 1.0, b: 0.0};
@@ -75,8 +75,8 @@ aPlayer.prototype.onUpdate = function(timeStep)
 {
     this.deltaTime += timeStep;
 
-    this.heartbeattimer += timeStep*(this.radarFeedback+0.1);
-    if(this.heartbeattimer > 10)
+    this.heartbeattimer += timeStep*(this.radarFeedbackNormalized*0.5+0.1);
+    if(this.heartbeattimer > 200)
     {
         this.heartbeattimer = 0;
         wgAudio.playSound("singleheartbeat");
@@ -234,14 +234,11 @@ aPlayer.prototype.updateCollision = function(timeStep)
             + (velocityNorm.y * (this.ent.object.size.y * 0.8))
         };
     
-    //this.ent.light.pos.x = origin.x;
-    //this.ent.light.pos.y = origin.y;
-   
     // Get a point placed in front of the move direciton.
     var pickPosition = 
         {
-            x: origin.x + (velocityNorm.x * Math.min(length, this.ent.object.size.x * 4)) ,
-            y: origin.y + (velocityNorm.y * Math.min(length, this.ent.object.size.y * 4)) 
+            x: origin.x + (velocityNorm.x * Math.min(length, this.ent.object.size.x * 5)) ,
+            y: origin.y + (velocityNorm.y * Math.min(length, this.ent.object.size.y * 5)) 
         };     
     
     var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
@@ -264,10 +261,11 @@ aPlayer.prototype.updateCollision = function(timeStep)
 
         this.radarFeedback *= this.velocityReductionFactor;
     }
+
+ //   this.ent.light.pos.x = pickPosition.x;
+ //   this.ent.light.pos.y = pickPosition.y;
     
-    
-    
-    this.radarStrengthNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
+    this.radarFeedbackNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
         
     //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
     //console.log(easeRes);

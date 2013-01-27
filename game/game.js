@@ -44,7 +44,7 @@ var gGlobals = new function()
 	this.nextlevelfunc = 0;
 };
 
-var musicplaying = "song1";
+/*var musicplaying = "song1";
 function toggleMusic()
 {
 	if(musicplaying != 0)
@@ -72,7 +72,7 @@ function toggleSound()
 		wgAudio.unmuteSounds();
 		audioplaying = 1;
 	}
-}
+}*/
 
 
 function gameevent(ts)
@@ -199,7 +199,7 @@ function main()
 	loadLevel1();
     
 	
-	wgAudio.playAudio("ambient", 1);
+//	wgAudio.playAudio("ambient", 1);
 
 
 	wgMain.mainLoop();
