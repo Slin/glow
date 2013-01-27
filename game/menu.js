@@ -115,9 +115,9 @@
 					counter = 0;
 				}
 				
-				if(counter > 3)
+				if(counter > 2)
 				{
-					counter = 3;
+					counter = 2;
 				}
 				
 				switch(counter)

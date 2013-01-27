@@ -251,6 +251,8 @@ function loadLevel3()
 	gGlobals.currlevelfunc = loadLevel3;
 	gGlobals.nextlevelfunc = loadLevel1;
 
+	alert("you win!!!111");
+
 	gGlobals.currlevel = 3;
 }
 
