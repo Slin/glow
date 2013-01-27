@@ -28,7 +28,7 @@ function aPlayer()
     this.VelocityUpdateTime = 50;
     this.RadarUpdateTime = 20;
     this.velocityReductionFactor = 0.95;
-    
+    this.playerCollisionSize = 0.65;
     this.radarFeedback = 0;
     
     // This value indicates how near you are to an obstacle (range 0..1).
@@ -241,9 +241,9 @@ aPlayer.prototype.updateCollision = function(timeStep)
     var origin = 
         {
             x: Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2) 
-            + (velocityNorm.x * (this.ent.object.size.x * 0.8)),
+            + (velocityNorm.x * (this.ent.object.size.x * this.playerCollisionSize)),
             y: Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
-            + (velocityNorm.y * (this.ent.object.size.y * 0.8))
+            + (velocityNorm.y * (this.ent.object.size.y * this.playerCollisionSize))
         };
 
     var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
