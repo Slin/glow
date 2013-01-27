@@ -6,6 +6,8 @@
 			document.getElementById('arRight').addEventListener("click",NextLevel,false);
 			document.getElementById('arLleft').addEventListener("click",PreviousLevel,false);
 			document.getElementById('level1').addEventListener("click",StartLevel1,false);
+			document.getElementById("intro").addEventListener("click", ShowInstructions, false);
+			document.getElementById("introBack").addEventListener("click", HideInstructions, false);
 			window.addEventListener("keydown",keyListener);
 			window.addEventListener("click",keyListener);
 			
@@ -18,6 +20,7 @@
 			}
 			function keyListener()
 			{
+				wgAudio.playSound("heartbeat");
 				window.removeEventListener("keydown",keyListener);
 				window.removeEventListener("click",keyListener);
 				clearInterval(interval);
@@ -26,17 +29,20 @@
 			function StartLevel1()
 			{	
 				HideLevelMenu();
+				wgAudio.stopAudio("menu");
 				main(1);
 			}
 			
 			function StartLevel2()
 			{	
 				HideLevelMenu();
+				wgAudio.stopAudio("menu");
 				main(2);
 			}
 			function StartLevel3()
 			{	
 				HideLevelMenu();
+				wgAudio.stopAudio("menu");
 				main(3);
 			}
 			function PreviousLevel()
@@ -148,6 +154,8 @@
 				curBg3.style.display = "block";
 				var curBg4 = document.getElementById('arLleft');
 				curBg4.style.display = "block";
+				curBg4 = document.getElementById('intro');
+				curBg4.style.display = "block";
 				
 				HideMenu();
 			}
@@ -169,6 +177,8 @@
 				curBg7.style.display = "none";
 				var curBg8 = document.getElementById('arLleft');
 				curBg8.style.display = "none";
+				curTab4 = document.getElementById('intro');
+				curTab4.style.display = "none";
 			}
 			function HideMenu()
 			{
@@ -185,6 +195,24 @@
 			function ShowMouseOut()
 			{
 				this.style.backgroundColor= 'transparent';
+			}
+
+			function ShowInstructions()
+			{
+				var curTab = document.getElementById('introSheet');
+				curTab.style.display = "block";
+
+				curTab = document.getElementById('introBack');
+				curTab.style.display = "block";
+			}
+
+			function HideInstructions()
+			{
+				var curTab = document.getElementById('introSheet');
+				curTab.style.display = "none";
+
+				curTab = document.getElementById('introBack');
+				curTab.style.display = "none";
 			}
 		}
 		function adjustPicture(id,width,height,offsetX,offsetY)
@@ -215,9 +243,14 @@
 			adjustPicture("locked2","410","410","13","8");
 			adjustPicture("level3","410","410","13","8");
 			adjustPicture("locked3","410","410","13","8");
+
+			adjustPicture("intro","145","145","700","400");
+			adjustPicture("introSheet","1920","1080","0","0");
+			adjustPicture("introBack","116","87","500","-300");
 		}
 		function OnLoad()
 		{
 			addListeners();
 			OnResize();
+			wgAudio.playAudio("menu", true);
 		}
