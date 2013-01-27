@@ -1,5 +1,7 @@
 function aSpider() 
 {
+    this.spiderCollisionScale = {x: 0.7, y: 0.7};
+    this.spiderBox = {x: 0, y: 0};
 }
 
 aSpider.prototype.onInit = function () 
@@ -7,21 +9,18 @@ aSpider.prototype.onInit = function ()
 	this.ent.object.size.x = 256;
 	this.ent.object.size.y = 256;
 
+    this.spiderBox.x = this.ent.object.size.x * this.spiderCollisionScale.x;
+    this.spiderBox.y = this.ent.object.size.y * this.spiderCollisionScale.y;
+    
     this.ent.object.material.initAtlas(4, 1, 1024, 256, 1024, 256);
     this.ent.object.material.setAnimation(0, 3, 0.1, 1);
 }
 
 aSpider.prototype.onUpdate = function (ts) 
 {
-    if (this.isThrowing)
-    {
-        this.updateThrow(ts);
-        return;
-    }
-
 	if (wgSimpleCollision.isColliding(
             this.ent.object.pos, 
-            this.ent.object.size, 
+            this.spiderBox, 
             wgCamera.follow.ent.object.pos, 
             wgCamera.follow.ent.object.size)) 
     {
@@ -45,8 +44,8 @@ aSpider.prototype.onUpdate = function (ts)
             y: direction.y - 2 * upVector.y * dot
         };
         
-        wgCamera.follow.velocity.x = reflectVector.x * wgCamera.follow.ent.object.size.x * 15;
-        wgCamera.follow.velocity.y = reflectVector.y * wgCamera.follow.ent.object.size.y * 15;
+        wgCamera.follow.velocity.x = reflectVector.x * wgCamera.follow.ent.object.size.x * 10;
+        wgCamera.follow.velocity.y = reflectVector.y * wgCamera.follow.ent.object.size.y * 10;
         
         wgCamera.follow.setPoison();
 	}

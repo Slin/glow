@@ -48,10 +48,10 @@ function aPlayer()
     this.isAlive = true;
     this.exit = false;
     
-    this.PoisonDuration = 5000;
+    this.PoisonDuration = 10000;
     this.poisonedTimeLeft = 0;
     this.PositiveColor = {r: 0.632, g: 1.0, b: 0.0};
-    this.NegativeColor = {r: 1.0, g: 0.0, b: 0.4};
+    this.NegativeColor = {r: 1.0, g: 0.0, b: 0.0};
     
 }
 
@@ -62,7 +62,7 @@ aPlayer.prototype.onInit = function()
     this.ent.object.size.x = 128;
     this.ent.object.size.y = 128;
     this.ent.createLight();
-    this.ent.light.color = this.PositiveColor;
+    this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
 	this.ent.object.material.initAtlas(4, 4, 1024, 1024, 1024, 1024);
 	this.ent.object.material.setAnimation(0, 7, 0.6, 1);
 
@@ -189,13 +189,13 @@ aPlayer.prototype.updateCameraPosition = function(timeStep)
 // The player collided with the environment.
 aPlayer.prototype.die = function()
 {
-     if(this.isAlive == true)
+    if(this.isAlive == true)
     {
 		this.ent.object.material.setAnimation(8, 15, 0.2, 0);
         this.ent.light.range = 0;
         gGlobals.reload = true;
         this.isAlive = false;
-    }    this.ent.object.material.setAnimation(8, 15, 0.4, 0);
+    }    
 }
 
 // Updates player penalties like poison.
@@ -203,13 +203,20 @@ aPlayer.prototype.updatePenalties = function(timeStep)
 {
     if (this.poisonedTimeLeft > 0)
     {
-       this.poisonedTimeLeft -= timeStep;
+        this.poisonedTimeLeft -= timeStep;
+        
+        var progress = 1 - Math.max(0, Math.min(1, this.poisonedTimeLeft / this.PoisonDuration));
+            
+        this.ent.light.color.r = this.PositiveColor.r * progress + this.NegativeColor.r * (1 - progress);
+        this.ent.light.color.g = this.PositiveColor.r * progress + this.NegativeColor.g * (1 - progress);
+        this.ent.light.color.b = this.PositiveColor.r * progress + this.NegativeColor.b * (1 - progress);
     }
     
     if (this.poisonedTimeLeft <= 0)
     {
         this.poisonedTimeLeft = 0;
         this.controlsInverted = false;
+        this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
     }
 }
 
@@ -233,10 +240,10 @@ aPlayer.prototype.updateCollision = function(timeStep)
             y: Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
             + (velocityNorm.y * (this.ent.object.size.y * 0.8))
         };
-    
-    //this.ent.light.pos.x = origin.x;
-    //this.ent.light.pos.y = origin.y;
-   
+                
+    // this.ent.light.pos.x = origin.x;
+    // this.ent.light.pos.y = origin.y;
+        
     // Get a point placed in front of the move direciton.
     var pickPosition = 
         {
@@ -250,7 +257,7 @@ aPlayer.prototype.updateCollision = function(timeStep)
     {
         this.die();
     }
-
+   
     var isRadarColliding = gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y);
     
     while (this.deltaRadarUpdate > this.RadarUpdateTime)
@@ -270,6 +277,6 @@ aPlayer.prototype.updateCollision = function(timeStep)
     this.radarStrengthNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
         
     //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
-    //console.log(easeRes);
+    console.log(this.radarFeedback);
     //this.ent.light.color = easeRes;
 }
