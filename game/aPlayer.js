@@ -96,13 +96,8 @@ aPlayer.prototype.onUpdate = function(timeStep)
     {
         this.gotoExit(timeStep);
     }
+
     this.updateCameraPosition(timeStep);
-        
-    var isColliding = gGlobals.background.object.getPixel(
-        Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
-        Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
-        );
-    
     this.updatePenalties(timeStep);
     
     this.ent.object.pos.x = this.pos.x;
