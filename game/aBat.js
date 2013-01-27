@@ -8,17 +8,13 @@ function aBat(wayPoints)
     this.wayPointEndPos = wayPoints[0];
     this.wayPointLength = 0;
     this.unitDuration = 3;
-    this.collisionMargin = {x: 0.8, y: 0.8};
-    this.collisionSize = {x: 0, y: 0};
+    this.collisionOrigin = {x: 128, y: 360};
+    this.collisionSize = {x: 256, y: 256};
 }
 
 aBat.prototype.onInit = function () 
 {
 	this.ent.object.size = {x: 512, y: 512};
-    this.collisionSize = {
-        x: this.ent.object.size.x * this.collisionMargin.x, 
-        y: this.ent.object.size.x * this.collisionMargin.y };
-    
     this.ent.createLight();
     this.ent.light.range = 20;
     this.ent.light.color.r = 1.0;
@@ -103,7 +99,7 @@ aBat.prototype.updateMovement = function(ts)
 aBat.prototype.updateCollision = function (ts) 
 {
 	if (wgSimpleCollision.isColliding(
-            this.ent.object.pos, 
+            this.collisionOrigin, 
             this.collisionSize, 
             wgCamera.follow.ent.object.pos, 
             wgCamera.follow.ent.object.size)) 
