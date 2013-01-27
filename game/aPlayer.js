@@ -47,6 +47,7 @@ function aPlayer()
     this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
+    this.exitcounter = 0;
     
     this.PoisonDuration = 10000;
     this.poisonedTimeLeft = 0;
@@ -113,7 +114,7 @@ aPlayer.prototype.onUpdate = function(timeStep)
     }
     this.ent.light.pos.y = this.ent.object.pos.y+30;
 
-    if(this.isAlive == true)
+    if(this.isAlive == true && this.exit == false)
     {
         var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
         this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
@@ -164,12 +165,14 @@ aPlayer.prototype.updateInput = function(timeStep)
 
 aPlayer.prototype.gotoExit = function(timestep)
 {
-    var distx = wgCamera.pos.x-this.pos.x;
-    var disty = wgCamera.pos.y-this.pos.y;
-    this.pos.x += distx*timestep*0.001*0.5;
-    this.pos.y += disty*timestep*0.001*0.5;
+    this.exitcounter += timestep*0.01;
+    this.ent.object.size.x -= this.exitcounter*timestep*0.01;
+    this.ent.object.size.y -= this.exitcounter*timestep*0.01;
 
-    if(distx*distx+disty*disty < 200)
+    var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
+    this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30*this.ent.object.size.x/128, 70*this.ent.object.size.x/128, 2);
+
+    if(this.ent.object.size.x <= 0 || this.ent.object.size.y <= 0)
     {
         gGlobals.nextlevel = true;
     }
