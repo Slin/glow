@@ -138,9 +138,7 @@ function loadLevel1()
 	ent.object.pos.x = 800;
 	ent.object.pos.y = 2000;
 
-	wgMain.first_ent.addEntity("game/textures/stage_1_fog.png", new aLevel());
-
-	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
+	wgMain.first_ent.addEntity("game/textures/stage_1_fog.png", new aLevel(), "light");
 
 	gGlobals.currlevelfunc = loadLevel1;
 	gGlobals.nextlevelfunc = loadLevel2;
@@ -171,8 +169,7 @@ function loadLevel2()
 	light.object.pos.x = 3224;
 	light.object.pos.y = 724;
 
-	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel());
-	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
+	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel(), "light");
 
 	gGlobals.currlevelfunc = loadLevel2;
 	gGlobals.nextlevelfunc = loadLevel1;
