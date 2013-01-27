@@ -42,6 +42,14 @@ var gGlobals = new function()
 
 	this.currlevelfunc = 0;
 	this.nextlevelfunc = 0;
+
+	this.maxlevel = 1;
+	var cookie = getCookie("maxlevel");
+	if(cookie != null && cookie != "")
+	{
+		this.maxlevel = parseInt(cookie);
+	}
+	this.currlevel = 1;
 };
 
 /*var musicplaying = "song1";
@@ -74,6 +82,30 @@ function toggleSound()
 	}
 }*/
 
+function setCookie(c_name, value, exdays)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : ", expires="+exdate.toUTCString());
+	var cookie = c_name + "=" + c_value+", path=/";
+	document.cookie=cookie;
+	alert(cookie+" : "+document.cookie);
+}
+
+function getCookie(c_name)
+{
+	var i,x,y,ARRcookies=document.cookie.split(",");
+	for (i=0;i<ARRcookies.length;i++)
+	{
+	  	x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+		y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+		x=x.replace(/^\s+|\s+$/g,"");
+		if (x==c_name)
+		{
+		    return unescape(y);
+		}
+	}
+}
 
 function gameevent(ts)
 {
@@ -91,6 +123,12 @@ function gameevent(ts)
 		gGlobals.nextlevel = false;
 		destroyLevel();
 		gGlobals.nextlevelfunc();
+
+		if(gGlobals.maxlevel <= gGlobals.currlevel)
+		{
+			gGlobals.maxlevel = gGlobals.currlevel;
+			setCookie("maxlevel", gGlobals.maxlevel, 365);
+		}
 	}
 }
 
@@ -142,6 +180,8 @@ function loadLevel1()
 
 	gGlobals.currlevelfunc = loadLevel1;
 	gGlobals.nextlevelfunc = loadLevel2;
+
+	gGlobals.currlevel = 1;
 }
 
 function loadLevel2()
@@ -173,6 +213,8 @@ function loadLevel2()
 
 	gGlobals.currlevelfunc = loadLevel2;
 	gGlobals.nextlevelfunc = loadLevel1;
+
+	gGlobals.currlevel = 2;
 }
 
 function destroyLevel()
@@ -191,12 +233,23 @@ function destroyLevel()
 	gGlobals.numlights = 0;
 }
 
-
-function main()
+function main(level)
 {
+	setCookie("maxlevel", 2, 356);
+
 	wgMain.initWebgine(gameevent);
 
-	loadLevel1();
+	switch(level)
+	{
+		case 1:
+			loadLevel1();
+			break;
+
+		case 2:
+			loadLevel2();
+			break;
+	}
+
 	wgAudio.playAudio("ambient", true);
 
 	wgMain.mainLoop();

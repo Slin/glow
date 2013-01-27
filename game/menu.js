@@ -115,6 +115,7 @@
 				switch(counter)
 				{
 					case 0:
+						document.getElementById("level1").addEventListener("click", StartLevel1, false);
 						var curTab1 = document.getElementById('level1');
 						curTab1.style.display = "block";
 						var curTab2 = document.getElementById('level2');
@@ -125,12 +126,13 @@
 						curTab4.style.display = "none";
 						var curTab5 = document.getElementById('level3');
 						curTab5.style.display = "none";
+						document.getElementById('level2').removeEventListener("click",StartLevel2,false);
 					break;
 					case 1:
-						checkLevel2(true);
+						checkLevel2((gGlobals.maxlevel >= 2)?true:false);
 					break;
 					case 2:
-						checkLevel3(false);
+						checkLevel3((gGlobals.maxlevel >= 3)?true:false);
 					break;
 				}
 			}
