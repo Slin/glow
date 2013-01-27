@@ -161,11 +161,6 @@ function loadLevel2()
 		light.object.pos.y = y;
 	}
 
-	var ent = wgMain.first_ent.addEntity("game/textures/spider.png", new aSpider());
-	ent.object.pos.x = 800;
-	ent.object.pos.y = 3630;
-	ent.object.rot = Math.PI-0.13;
-
 	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel());
 
 	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
@@ -199,7 +194,7 @@ function main()
 	loadLevel1();
     
 	
-//	wgAudio.playAudio("ambient", 1);
+	wgAudio.playAudio("ambient", true);
 
 
 	wgMain.mainLoop();

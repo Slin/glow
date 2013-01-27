@@ -75,7 +75,7 @@ aPlayer.prototype.onUpdate = function(timeStep)
 {
     this.deltaTime += timeStep;
 
-    this.heartbeattimer += timeStep*(this.radarFeedbackNormalized*0.5+0.1);
+    this.heartbeattimer += timeStep*(this.radarFeedbackNormalized*0.8+0.1);
     if(this.heartbeattimer > 200)
     {
         this.heartbeattimer = 0;
@@ -186,6 +186,7 @@ aPlayer.prototype.die = function()
 {
     if(this.isAlive == true)
     {
+        wgAudio.playSound("splatter");
 		this.ent.object.material.setAnimation(8, 15, 0.2, 0);
         this.ent.light.range = 0;
         gGlobals.reload = true;
@@ -283,13 +284,4 @@ aPlayer.prototype.updateCollision = function(timeStep)
         
         this.radarFeedbackNormalized = radarStrength;
     }
-
- //   this.ent.light.pos.x = pickPosition.x;
- //   this.ent.light.pos.y = pickPosition.y;
-    
-    this.radarFeedbackNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
-          
-    //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
-    //console.log(this.radarFeedbackNormalized);
-    //this.ent.light.color = easeRes;
 }

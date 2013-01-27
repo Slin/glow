@@ -25,7 +25,7 @@ aSpider.prototype.onUpdate = function (ts)
             wgCamera.follow.ent.object.size)) 
     {
           
-		wgAudio.playSound("flower");
+		wgAudio.playSound("spider");
         
         var length =  Math.sqrt(wgCamera.follow.velocity.x * wgCamera.follow.velocity.x 
             + wgCamera.follow.velocity.y * wgCamera.follow.velocity.y);

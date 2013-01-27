@@ -41,12 +41,12 @@ var wgAudio = new function()
 	
 	this.playAudio = function(name, loop)
 	{
-		if(!document.getElementById(name))
+		var audio = document.getElementById(name);
+		if(!audio)
 			return;
-		document.getElementById(name).play();
-		
-		if(loop != 0)
-			document.getElementById(name).addEventListener('ended', loopAudio, false);
+
+		audio.loop = loop;
+		audio.play();
 	};
 	
 	this.stopAudio = function(name)
@@ -87,7 +87,6 @@ var wgAudio = new function()
 		var time = new Date();
 		for(i = 0; i < this.channels.length; i++)
 		{
-			var i = 0;
 			if(this.channels[i].finished < time.getTime())
 			{
 				var player = document.getElementById(name);
