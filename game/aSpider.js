@@ -12,7 +12,7 @@ aSpider.prototype.onInit = function ()
     this.spiderBox.x = this.ent.object.size.x * this.spiderCollisionScale.x;
     this.spiderBox.y = this.ent.object.size.y * this.spiderCollisionScale.y;
     
-    this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
+    this.ent.object.material.initAtlas(4, 4, 1024, 512, 1024, 512);
     this.ent.object.material.setAnimation(0, 7, 0.1, 1);
 }
 
