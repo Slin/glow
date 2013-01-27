@@ -82,7 +82,20 @@
 				curTab2.style.display = "block";
 				
 			}
-			
+			function changeLevel(count)
+			{
+				switch(count)
+				{
+					case 0:
+						var curTab2 = document.getElementById('level1');
+						curTab2.style.display = "block";
+						var curTab2 = document.getElementById('level2');
+						curTab2.style.display = "none";
+						var curTab2 = document.getElementById('level3');
+						curTab2.style.display = "none";
+					break;
+				}
+			}
 			function ShowLevelMenu()
 			{
 				var curTab = document.getElementById('chapScreen');
@@ -166,7 +179,7 @@
 			<img src ="bilder/TitleScreen.png" 		id="tltScreen"></img>
 			<img src ="bilder/ChapterSelection.png" id="chapScreen" style="display:none;"></img>
 			<img src ="bilder/Level1.png" 			id="level1" 	style="display:none;"></img>
-			<img src ="bilder/locked.png" 			id="level2" 	style="display:none;"></img>
+			<img src ="bilder/Levle2.png" 			id="level2" 	style="display:none;"></img>
 			<img src ="bilder/next.png" 			id="arRight" 	style="display:none;"></img>
 			<img src ="bilder/previous.png" 		id="arLleft" 	style="display:none;"></img>
 		</div>
