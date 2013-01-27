@@ -7,6 +7,7 @@
 			document.getElementById('arLleft').addEventListener("click",PreviousLevel,false);
 			document.getElementById('level1').addEventListener("click",StartLevel1,false);
 			window.addEventListener("keydown",keyListener);
+			window.addEventListener("click",keyListener);
 			
 			// add your fuctions
 			function animetext()
@@ -207,8 +208,8 @@
 			adjustPicture("tltScreen","588","33","8","-300");
 			adjustPicture("level1","410","410","13","8");
 			adjustPicture("chapScreen","1920","1080","0","0");
-			adjustPicture("arRight","116","87","360","-30");
-			adjustPicture("arLleft","116","87","-320","-30");
+			adjustPicture("arRight","116","87","180","-300");
+			adjustPicture("arLleft","116","87","-140","-300");
 			adjustPicture("level2","410","410","13","8");
 			adjustPicture("locked2","410","410","13","8");
 			adjustPicture("level3","410","410","13","8");
