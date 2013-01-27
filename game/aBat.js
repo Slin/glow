@@ -8,11 +8,17 @@ function aBat(wayPoints)
     this.wayPointEndPos = wayPoints[0];
     this.wayPointLength = 0;
     this.unitDuration = 3;
+    this.collisionMargin = {x: 0.8, y: 0.8};
+    this.collisionSize = {x: 0, y: 0};
 }
 
 aBat.prototype.onInit = function () 
 {
-	this.ent.object.size = {x: 256, y: 256};
+	this.ent.object.size = {x: 512, y: 512};
+    this.collisionSize = {
+        x: this.ent.object.size.x * this.collisionMargin.x, 
+        y: this.ent.object.size.x * this.collisionMargin.y };
+    
     this.ent.createLight();
     this.ent.light.range = 20;
     this.ent.light.color.r = 1.0;
@@ -24,8 +30,8 @@ aBat.prototype.onInit = function ()
          this.wayPoints[wayPoint].y -= this.ent.object.size.y;
     }
     
-    this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
-    this.ent.object.material.setAnimation(0, 7, 0.1, 1);
+    this.ent.object.material.initAtlas(4, 2, 2048, 1024, 2048, 1024);
+    this.ent.object.material.setAnimation(0, 7, 0.2, 1);
     
     wgAudio.playSound("bat");
 }
@@ -42,15 +48,15 @@ aBat.prototype.updateLightPos = function()
     var isFlipped = this.wayPointStartPos.x - this.wayPointEndPos.x < 0;
 
     // Move light position.
-	this.ent.light.pos.y = this.ent.object.pos.y+256-178;
+	this.ent.light.pos.y = this.ent.object.pos.y + this.ent.object.size.y * 0.515;
     
     if (isFlipped)
     {
-        this.ent.light.pos.x = this.ent.object.pos.x+198;
+        this.ent.light.pos.x = this.ent.object.pos.x + this.ent.object.size.x * 0.555;
     }
     else
     {
-        this.ent.light.pos.x = this.ent.object.pos.x+58;
+        this.ent.light.pos.x = this.ent.object.pos.x + this.ent.object.size.x * 0.445;
     }
     
     this.ent.object.material.inverttexx = isFlipped ? 0 : 1;
@@ -98,7 +104,7 @@ aBat.prototype.updateCollision = function (ts)
 {
 	if (wgSimpleCollision.isColliding(
             this.ent.object.pos, 
-            this.ent.object.size, 
+            this.collisionSize, 
             wgCamera.follow.ent.object.pos, 
             wgCamera.follow.ent.object.size)) 
     {
