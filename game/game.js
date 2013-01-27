@@ -151,10 +151,10 @@ function loadLevel1()
 	light.object.pos.x = 468;
 	light.object.pos.y = 325;
 
-	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 3042, y: 3724}));
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 2604, y: 3482}));
 //	light.object.material.inverttexx = true;
-	light.object.pos.x = 2942;
-	light.object.pos.y = 3508;
+	light.object.pos.x = 2504;
+	light.object.pos.y = 3266;
 
 	var ent = wgMain.first_ent.addEntity("game/textures/spider.png", new aSpider());
 	ent.object.pos.x = 800;
@@ -231,7 +231,7 @@ function loadLevel3()
 
 
 	var light = wgMain.first_ent.addEntity("game/textures/flower.png", 
-        new aLight({x: 3400 - 128, y: 4096 - 3936 + 192}));
+        new aLight({x: 3400, y: 4096 - 3936 + 192}));
 	light.object.pos = {x: 3400 - 100, y: 4096 - 3936 + 192 - 210};
 
 	light = wgMain.first_ent.addEntity("game/textures/flower.png", 
