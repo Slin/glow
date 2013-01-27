@@ -241,42 +241,56 @@ aPlayer.prototype.updateCollision = function(timeStep)
             + (velocityNorm.y * (this.ent.object.size.y * 0.8))
         };
                 
-    // this.ent.light.pos.x = origin.x;
-    // this.ent.light.pos.y = origin.y;
-        
-    // Get a point placed in front of the move direciton.
-    var pickPosition = 
-        {
-            x: origin.x + (velocityNorm.x * Math.min(length, this.ent.object.size.x * 4)) ,
-            y: origin.y + (velocityNorm.y * Math.min(length, this.ent.object.size.y * 4)) 
-        };     
-    
+                    
     var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
     
     if (isColliding)
     {
         this.die();
+        return;
     }
-   
-    var isRadarColliding = gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y);
-    
-    while (this.deltaRadarUpdate > this.RadarUpdateTime)
-    {
-        this.deltaRadarUpdate -= this.RadarUpdateTime;
-
-        if (isRadarColliding)
-        {
-            this.radarFeedback += 1;
-        }
-
-        this.radarFeedback *= this.velocityReductionFactor;
-    }
-    
-    
-    
-    this.radarStrengthNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
+                
+    // this.ent.light.pos.x = origin.x;
+    // this.ent.light.pos.y = origin.y;
         
+           
+    if (this.deltaRadarUpdate > this.RadarUpdateTime)
+    {
+        this.deltaRadarUpdate = 0;
+            
+        var pickDirections = [ {x: -0.71,y: -0.71}, {x: 0.71,y: -0.71}, {x: -0.71,y: 0.71}, {x: 0.71,y: 0.71} ];
+        var distanceStep = this.ent.object.size.x;
+        var distanceTests = 8;
+        var radarStrength = 0;
+        
+        for (var distanceCounter = 1; distanceCounter <= distanceTests; distanceCounter++)
+        {
+            for (var direction in pickDirections)
+            {
+                 // Get a point placed in front of the move direciton.
+                var pickPosition = 
+                {
+                    x: origin.x + pickDirections[direction].x * distanceStep * distanceCounter,
+                    y: origin.y + pickDirections[direction].y * distanceStep * distanceCounter 
+                };     
+                
+                if (gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y))
+                {
+                    radarStrength = (1 - distanceCounter / (distanceTests-1));
+                    break;
+                }
+            }
+            
+            if (radarStrength != 0)
+            {
+                break;
+            }
+        }
+        
+        this.radarFeedbackNormalized = radarStrength;
+    }
+          
     //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
-    console.log(this.radarFeedback);
+    //console.log(this.radarFeedbackNormalized);
     //this.ent.light.color = easeRes;
 }
