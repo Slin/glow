@@ -89,7 +89,7 @@ function setCookie(c_name, value, exdays)
 	var c_value=escape(value) + ((exdays==null) ? "" : ", expires="+exdate.toUTCString());
 	var cookie = c_name + "=" + c_value+", path=/";
 	document.cookie=cookie;
-	alert(cookie+" : "+document.cookie);
+//	alert(cookie+" : "+document.cookie);
 }
 
 function getCookie(c_name)
@@ -213,6 +213,8 @@ function loadLevel2()
 
 	gGlobals.currlevelfunc = loadLevel2;
 	gGlobals.nextlevelfunc = loadLevel3;
+
+	gGlobals.currlevel = 2;
 }
 
 function loadLevel3()
@@ -249,7 +251,7 @@ function loadLevel3()
 	gGlobals.currlevelfunc = loadLevel3;
 	gGlobals.nextlevelfunc = loadLevel1;
 
-	gGlobals.currlevel = 2;
+	gGlobals.currlevel = 3;
 }
 
 function destroyLevel()
@@ -270,7 +272,7 @@ function destroyLevel()
 
 function main(level)
 {
-	setCookie("maxlevel", 2, 356);
+//	setCookie("maxlevel", 2, 356);
 
 	wgMain.initWebgine(gameevent);
 
@@ -282,6 +284,10 @@ function main(level)
 
 		case 2:
 			loadLevel2();
+			break;
+			
+		case 3:
+			loadLevel3();
 			break;
 	}
 
