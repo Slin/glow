@@ -125,13 +125,15 @@ var wgShader = new function()
 					"varying mediump vec2 worldpos;"+
 					"void main()"+
 					"{"+
-					"	 gl_FragColor.rgb = vec3(0.0);"+
+					"	 gl_FragColor.rgb = pow(texture2D(tex0, texcoord0).rgb, vec3(2.2));"+
+					"	 vec3 light = vec3(0.0);"+
 					"	 float dist = 0.0;"+
 					"	 for(int i = 0; i < 8; i++)"+
 					"	 {"+
 					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
-					"    	gl_FragColor.rgb += lightcolor[i]/(dist*dist*dist*dist);"+
+					"    	light += lightcolor[i]/(dist*dist*dist*dist);"+
 					"	 }"+
+					"	 gl_FragColor.rgb *= light;"+
 					"	 gl_FragColor.rgb = pow(gl_FragColor.rgb, vec3(1.0/2.2));"+
 					"    gl_FragColor.a = 1.0;"+
 					"	 gl_FragColor.rgb *= gl_FragColor.a;"+
