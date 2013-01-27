@@ -258,9 +258,11 @@ aPlayer.prototype.updateCollision = function(timeStep)
     {
         this.deltaRadarUpdate = 0;
             
-        var pickDirections = [ {x: -0.71,y: -0.71}, {x: 0.71,y: -0.71}, {x: -0.71,y: 0.71}, {x: 0.71,y: 0.71} ];
+        var pickDirections = [ {x: -0.71,y: -0.71}, {x: 0.71,y: -0.71}, {x: -0.71,y: 0.71}, {x: 0.71,y: 0.71},
+            {x: -1,y: 0}, {x: 1,y: 0}, {x: 0,y: 1}, {x: 0,y: -1} ];
+        var distanceMul = [  1, 1.5, 1.5, 2, 2.2, 2.3, 3 ];
         var distanceStep = this.ent.object.size.x;
-        var distanceTests = 8;
+        var distanceTests = distanceMul.length;
         var radarStrength = 0;
         
         for (var distanceCounter = 1; distanceCounter <= distanceTests; distanceCounter++)
@@ -270,13 +272,13 @@ aPlayer.prototype.updateCollision = function(timeStep)
                  // Get a point placed in front of the move direciton.
                 var pickPosition = 
                 {
-                    x: origin.x + pickDirections[direction].x * distanceStep * distanceCounter,
-                    y: origin.y + pickDirections[direction].y * distanceStep * distanceCounter 
+                    x: origin.x + pickDirections[direction].x * distanceStep * distanceMul[distanceCounter],
+                    y: origin.y + pickDirections[direction].y * distanceStep * distanceMul[distanceCounter] 
                 };     
                 
                 if (gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y))
                 {
-                    radarStrength = (1 - distanceCounter / (distanceTests-1));
+                    radarStrength = 1 - distanceCounter / (distanceTests + 1);
                     break;
                 }
             }
