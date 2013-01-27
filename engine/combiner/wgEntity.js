@@ -76,6 +76,23 @@ wgEntity.prototype.addLight = function(act)
 	return temp;
 };
 
+wgEntity.prototype.addEmpty = function(act)
+{
+	var temp = new wgEntity();
+    temp.next = this.next;
+    temp.next.prev = temp;
+	temp.prev = this;
+    this.next = temp;
+	
+	temp.action = act;
+	temp.action.ent = temp;
+	if(temp.action && temp.action.onInit)
+	{
+		temp.action.onInit();
+	}
+	return temp;
+};
+
 wgEntity.prototype.createLight = function()
 {
 	this.light = wgRenderer.first_light.addLight();

@@ -102,6 +102,8 @@ function loadLevel1()
 
 	wgMain.first_ent.addEntity("game/textures/stage_1_asset.png", new aLevel());
     
+	wgMain.first_ent.addEmpty(new aSpiderNet(2200, 1100, 300*300));
+
     // The player entity.
     gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
     gGlobals.player.action.pos.x = 813;
@@ -120,6 +122,10 @@ function loadLevel1()
 	ent.object.pos.x = 800;
 	ent.object.pos.y = 3630;
 	ent.object.rot = Math.PI-0.13;
+
+	var ent = wgMain.first_ent.addEntity("game/textures/bat.png", new aBat());
+	ent.object.pos.x = 800;
+	ent.object.pos.y = 2000;
 
 	wgMain.first_ent.addEntity("game/textures/stage_1_fog.png", new aLevel());
 

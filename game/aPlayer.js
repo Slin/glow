@@ -53,7 +53,9 @@ function aPlayer()
     this.poisonedTimeLeft = 0;
     this.PositiveColor = {r: 0.632, g: 1.0, b: 0.0};
     this.NegativeColor = {r: 1.0, g: 0.0, b: 0.0};
-    
+
+    this.slowed = 0;
+    this.slowfactor = 1;
 }
 
 aPlayer.prototype.onInit = function()
@@ -75,9 +77,10 @@ aPlayer.prototype.onInit = function()
 aPlayer.prototype.onUpdate = function(timeStep)
 {
     this.deltaTime += timeStep;
+    this.slowfactor = (this.slowed>0)?0.5:1.0;
 
     this.heartbeattimer += timeStep*(this.radarFeedbackNormalized*0.8+0.1);
-    if(this.heartbeattimer > 200)
+    if(this.heartbeattimer > 200*this.slowfactor)
     {
         this.heartbeattimer = 0;
         wgAudio.playSound("singleheartbeat");
@@ -119,6 +122,8 @@ aPlayer.prototype.onUpdate = function(timeStep)
         var clamp = Math.sin(this.deltaTime*0.005)*0.5+0.5;
         this.ent.light.range = $.easing.easeInOutQuad(this.ent.light.range, clamp, 30, 70, 2);
     }
+
+    this.slowed = 0;
 };
 
 // Reads keyboard direction keys and moves the player with some velocity.
@@ -143,8 +148,8 @@ aPlayer.prototype.updateInput = function(timeStep)
        this.velocity.y += this.controlsInverted ? -timeStep : timeStep;
     }
            
-    this.pos.x += this.SpeedFactor * this.velocity.x;
-    this.pos.y += this.SpeedFactor * this.velocity.y;
+    this.pos.x += this.SpeedFactor * this.velocity.x * this.slowfactor;
+    this.pos.y += this.SpeedFactor * this.velocity.y * this.slowfactor;
     
     while (this.deltaVelocityUpdate > this.VelocityUpdateTime)
     {
