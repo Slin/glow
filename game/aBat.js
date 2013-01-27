@@ -21,24 +21,39 @@ aBat.prototype.onInit = function ()
     
     for (var wayPoint in this.wayPoints)
     {
-        //this.wayPoints[wayPoint].x -= this.ent.object.size.x;
-        this.wayPoints[wayPoint].y -= this.ent.object.size.y;
+         this.wayPoints[wayPoint].y -= this.ent.object.size.y;
     }
+    
+    this.ent.object.material.initAtlas(4, 2, 1024, 512, 1024, 512);
+    this.ent.object.material.setAnimation(0, 7, 0.1, 1);
+    
+    wgAudio.playSound("bat");
 }
 
 aBat.prototype.onUpdate = function (ts) 
 {
-    this.ent.object.material.inverttexx = this.wayPointStartPos.x - this.wayPointEndPos.x < 0 ? 0 : 1;
-
+    this.updateCollision();
     this.updateMovement(ts);
     this.updateLightPos();
 }
 
 aBat.prototype.updateLightPos = function()
 {
+    var isFlipped = this.wayPointStartPos.x - this.wayPointEndPos.x < 0;
+
     // Move light position.
-	this.ent.light.pos.x = this.ent.object.pos.x+198;
-    this.ent.light.pos.y = this.ent.object.pos.y+256-178;
+	this.ent.light.pos.y = this.ent.object.pos.y+256-178;
+    
+    if (isFlipped)
+    {
+        this.ent.light.pos.x = this.ent.object.pos.x+198;
+    }
+    else
+    {
+        this.ent.light.pos.x = this.ent.object.pos.x+58;
+    }
+    
+    this.ent.object.material.inverttexx = isFlipped ? 0 : 1;
 }
 
 // Update movement.
@@ -74,5 +89,20 @@ aBat.prototype.updateMovement = function(ts)
         
         // Move light position.
         this.ent.object.pos = interpolatedPosition;
+    }
+}
+
+
+// Player dies on collision with the bat.
+aBat.prototype.updateCollision = function (ts) 
+{
+	if (wgSimpleCollision.isColliding(
+            this.ent.object.pos, 
+            this.ent.object.size, 
+            wgCamera.follow.ent.object.pos, 
+            wgCamera.follow.ent.object.size)) 
+    {
+        wgAudio.playSound("batCollide");
+        wgCamera.follow.die();
     }
 }
