@@ -123,7 +123,18 @@ function loadLevel1()
 	ent.object.pos.y = 3630;
 	ent.object.rot = Math.PI-0.13;
 
-	var ent = wgMain.first_ent.addEntity("game/textures/bat.png", new aBat());
+    var movePath = [
+        {x: 3088, y: 4096 - 3000}, 
+        {x: 2064, y: 4096 - 3096}, 
+        {x: 1520, y: 4096 - 2552}, 
+        {x: 848, y: 4096 - 2136},
+        {x: 936, y: 4096 - 952},
+        {x: 848, y: 4096 - 2136},
+        {x: 1520, y: 4096 - 2552}, 
+        {x: 2064, y: 4096 - 3096}
+        ];
+        
+	var ent = wgMain.first_ent.addEntity("game/textures/bat.png", new aBat(movePath));
 	ent.object.pos.x = 800;
 	ent.object.pos.y = 2000;
 

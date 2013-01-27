@@ -1,6 +1,13 @@
-function aBat() 
+function aBat(wayPoints) 
 {
-    
+    this.wayPoints = wayPoints;
+    this.wayPointIndex = 0;
+    this.wayPointElapsedTime = 0.0;
+    this.wayPointReached = true;
+    this.wayPointStartPos = wayPoints[0];
+    this.wayPointEndPos = wayPoints[0];
+    this.wayPointLength = 0;
+    this.unitDuration = 3;
 }
 
 aBat.prototype.onInit = function () 
@@ -11,10 +18,61 @@ aBat.prototype.onInit = function ()
     this.ent.light.color.r = 1.0;
     this.ent.light.color.g = 0.0;
     this.ent.light.color.b = 0.0;
+    
+    for (var wayPoint in this.wayPoints)
+    {
+        //this.wayPoints[wayPoint].x -= this.ent.object.size.x;
+        this.wayPoints[wayPoint].y -= this.ent.object.size.y;
+    }
 }
 
 aBat.prototype.onUpdate = function (ts) 
 {
+    this.ent.object.material.inverttexx = this.wayPointStartPos.x - this.wayPointEndPos.x < 0 ? 0 : 1;
+
+    this.updateMovement(ts);
+    this.updateLightPos();
+}
+
+aBat.prototype.updateLightPos = function()
+{
+    // Move light position.
 	this.ent.light.pos.x = this.ent.object.pos.x+198;
     this.ent.light.pos.y = this.ent.object.pos.y+256-178;
+}
+
+// Update movement.
+aBat.prototype.updateMovement = function(ts)
+{
+    // Select next waypoint.
+    if (this.wayPointReached)
+    { 
+        this.wayPointReached = false;
+        this.wayPointStartPos = this.wayPointEndPos;
+        this.wayPointIndex = (this.wayPointIndex+1) % this.wayPoints.length;
+        this.wayPointEndPos = this.wayPoints[this.wayPointIndex];
+        this.wayPointElapsedTime = 0;
+        this.wayPointLength = Math.sqrt(
+            this.wayPointStartPos.x * this.wayPointStartPos.x + 
+            this.wayPointStartPos.y * this.wayPointStartPos.y);
+    }
+    else
+    {
+        this.wayPointElapsedTime += ts;
+        var progress = Math.min (1, this.wayPointElapsedTime / (this.unitDuration * this.wayPointLength));
+        //console.log(progress);
+        var interpolatedPosition = {x: 0, y: 0}; 
+        interpolatedPosition.x = (1-progress) * this.wayPointStartPos.x + this.wayPointEndPos.x * progress;
+        interpolatedPosition.y = (1-progress) * this.wayPointStartPos.y + this.wayPointEndPos.y * progress;
+        
+        //console.log(interpolatedPosition);
+        
+        if (progress >= 1)
+        {
+            this.wayPointReached = true;
+        }
+        
+        // Move light position.
+        this.ent.object.pos = interpolatedPosition;
+    }
 }
