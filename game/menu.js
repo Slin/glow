@@ -1,5 +1,7 @@
-function addListeners()
+		function addListeners()
 		{
+			var count = 0;
+			var counter = 0;
 			var interval = window.setInterval(function(){animetext();},30);
 			document.getElementById('arRight').addEventListener("click",NextLevel,false);
 			document.getElementById('arLleft').addEventListener("click",PreviousLevel,false);
@@ -30,7 +32,11 @@ function addListeners()
 				HideLevelMenu();
 				main(2);
 			}
-			
+			function StartLevel3()
+			{	
+				HideLevelMenu();
+				main(3);
+			}
 			function PreviousLevel()
 			{
 				changeLevel(-1);
@@ -52,24 +58,61 @@ function addListeners()
 				
 				if(unlocked)
 				{
-					var curTab2 = document.getElementById('level2');
-					curTab2.style.display = "block";
+					var curTab4 = document.getElementById('level2');
+					curTab4.style.display = "block";
+					var curTab5 = document.getElementById('locked2');
+					curTab5.style.display = "none";
 					document.getElementById('level2').addEventListener("click",StartLevel2,false);
 				}
 				else
 				{
-					var curTab2 = document.getElementById('locked2');
-					curTab2.style.display = "block";
+					var curTab6 = document.getElementById('locked2');
+					curTab6.style.display = "block";
+					var curTab7 = document.getElementById('level2');
+					curTab7.style.display = "none";
+				}
+			}
+			
+			function checkLevel3(unlocked)
+			{
+				var curTab1 = document.getElementById('level1');
+				curTab1.style.display = "none";
+				var curTab2 = document.getElementById('locked2');
+				curTab2.style.display = "none";
+				var curTab3 = document.getElementById('level2');
+				curTab3.style.display = "none";
+				document.getElementById('level1').removeEventListener("click",StartLevel2,false);
+				
+				if(unlocked)
+				{
+					var curTab4 = document.getElementById('level3');
+					curTab4.style.display = "block";
+					var curTab5 = document.getElementById('locked3');
+					curTab5.style.display = "none";
+					document.getElementById('level3').addEventListener("click",StartLevel3,false);
+				}
+				else
+				{
+					var curTab6 = document.getElementById('locked3');
+					curTab6.style.display = "block";
+					var curTab7 = document.getElementById('level3');
+					curTab7.style.display = "none";
 				}
 			}
 			function changeLevel(factor)
 			{
-				count += factor;
-				if(count < 0)
+				counter += factor;
+				if(counter < 0)
 				{
-					count = 0;
+					counter = 0;
 				}
-				switch(count)
+				
+				if(counter > 3)
+				{
+					counter = 3;
+				}
+				
+				switch(counter)
 				{
 					case 0:
 						var curTab1 = document.getElementById('level1');
@@ -84,7 +127,10 @@ function addListeners()
 						curTab5.style.display = "none";
 					break;
 					case 1:
-						checkLevel2()
+						checkLevel2(true);
+					break;
+					case 2:
+						checkLevel3(false);
 					break;
 				}
 			}
@@ -107,10 +153,18 @@ function addListeners()
 				curTab1.style.display = "none";
 				var curTab2 = document.getElementById('level1');
 				curTab2.style.display = "none";
-				var curBg3 = document.getElementById('arRight');
-				curBg3.style.display = "none";
-				var curBg4 = document.getElementById('arLleft');
-				curBg4.style.display = "none";
+				var curTab3 = document.getElementById('level2');
+				curTab3.style.display = "none";
+				var curTab4 = document.getElementById('level3');
+				curTab4.style.display = "none";
+				var curTab5 = document.getElementById('locked2');
+				curTab5.style.display = "none";
+				var curTab6 = document.getElementById('locked3');
+				curTab6.style.display = "none";
+				var curBg7 = document.getElementById('arRight');
+				curBg7.style.display = "none";
+				var curBg8 = document.getElementById('arLleft');
+				curBg8.style.display = "none";
 			}
 			function HideMenu()
 			{
@@ -141,8 +195,6 @@ function addListeners()
 			var setMidx = (window.innerWidth- element.width)/2+offsetX*xFactor;
 			var setMidy = (window.innerHeight- element.height)/2-offsetY*yFactor;
 			
-			console.log(innerWidth);
-			
 			element.style.position = "absolute";
 			element.style.left = setMidx+"px";
 			element.style.top = setMidy+"px";
@@ -158,7 +210,7 @@ function addListeners()
 			adjustPicture("level2","410","410","13","8");
 			adjustPicture("locked2","410","410","13","8");
 			adjustPicture("level3","410","410","13","8");
-			adjustPicture("lokced3","410","410","13","8");
+			adjustPicture("locked3","410","410","13","8");
 		}
 		function OnLoad()
 		{
