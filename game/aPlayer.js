@@ -247,11 +247,7 @@ aPlayer.prototype.updateCollision = function(timeStep)
         this.die();
         return;
     }
-                
-    // this.ent.light.pos.x = origin.x;
-    // this.ent.light.pos.y = origin.y;
-        
-           
+    
     if (this.deltaRadarUpdate > this.RadarUpdateTime)
     {
         this.deltaRadarUpdate = 0;

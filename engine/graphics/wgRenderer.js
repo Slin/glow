@@ -133,7 +133,6 @@ var wgRenderer = new function()
 				wgMain.gl.uniform3fv(tempobj.material.shader.lightcolorloc, lightcol);
 			}
 
-     //       wgMain.gl.bindBuffer(wgMain.gl.ARRAY_BUFFER, this.mesh);
             wgMain.gl.vertexAttribPointer(tempobj.material.shader.posloc, 2, wgMain.gl.FLOAT, false, 0, 0);
             wgMain.gl.enableVertexAttribArray(tempobj.material.shader.posloc);
             wgMain.gl.drawArrays(wgMain.gl.TRIANGLES, 0, 6);

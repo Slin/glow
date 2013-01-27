@@ -32,7 +32,6 @@ function wgObject()
     this.size = {x : 64, y : 64};
     this.rot = 0;
     
-    this.mesh = 0;
     this.material = 0;
 }
 
@@ -69,7 +68,6 @@ wgObject.prototype.addObject = function(texfile, shader, mode)
 	temp.material = new wgMaterial();
 	temp.material.imageResource = wgTexture.getTexture(texfile, mode);
 	temp.material.shader = wgShader.getShader(shader);
-//	temp.mesh = wgMesh.getMesh();
 	
     return temp;
 };

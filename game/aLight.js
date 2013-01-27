@@ -47,7 +47,6 @@ aLight.prototype.onInit = function()
 	this.ent.object.size.y = 256;
 	this.ent.object.material.initAtlas(2, 1, 512, 256, 512, 256);
 	this.ent.object.material.setAtlas(1);
-//	this.ent.object.rot = Math.random()*2*Math.PI;
 }
 
 aLight.prototype.onUpdate = function(ts)
