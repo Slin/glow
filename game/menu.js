@@ -19,6 +19,7 @@
 			function keyListener()
 			{
 				window.removeEventListener("keydown",keyListener);
+				window.removeEventListener("click",keyListener);
 				clearInterval(interval);
 				ShowLevelMenu();
 			}
