@@ -8,7 +8,7 @@ function aBat(wayPoints)
     this.wayPointEndPos = wayPoints[0];
     this.wayPointLength = 0;
     this.unitDuration = 3;
-    this.collisionOrigin = {x: 128, y: 360};
+    this.collisionOrigin = {x: 0, y: 0};
     this.collisionSize = {x: 256, y: 256};
 }
 
@@ -28,7 +28,7 @@ aBat.prototype.onInit = function ()
     
     this.ent.object.material.initAtlas(4, 2, 2048, 1024, 2048, 1024);
     this.ent.object.material.setAnimation(0, 7, 0.2, 1);
-    
+
     wgAudio.playSound("bat");
 }
 
@@ -49,10 +49,12 @@ aBat.prototype.updateLightPos = function()
     if (isFlipped)
     {
         this.ent.light.pos.x = this.ent.object.pos.x + this.ent.object.size.x * 0.555;
+        this.collisionOrigin = {x: 130, y: 200};
     }
     else
     {
         this.ent.light.pos.x = this.ent.object.pos.x + this.ent.object.size.x * 0.445;
+         this.collisionOrigin = {x: 512-130, y: 200};
     }
     
     this.ent.object.material.inverttexx = isFlipped ? 0 : 1;
@@ -99,7 +101,7 @@ aBat.prototype.updateMovement = function(ts)
 aBat.prototype.updateCollision = function (ts) 
 {
 	if (wgSimpleCollision.isColliding(
-            this.collisionOrigin, 
+            { x: this.ent.object.pos.x + this.collisionOrigin.x, y: this.ent.object.pos.y + this.collisionOrigin.y}, 
             this.collisionSize, 
             wgCamera.follow.ent.object.pos, 
             wgCamera.follow.ent.object.size)) 
