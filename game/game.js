@@ -172,6 +172,41 @@ function loadLevel2()
 	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel(), "light");
 
 	gGlobals.currlevelfunc = loadLevel2;
+	gGlobals.nextlevelfunc = loadLevel3;
+}
+
+function loadLevel3()
+{
+	gGlobals.background = wgMain.first_ent.addEntity("game/textures/stage_3_collision.png", new aLevel());
+	gGlobals.background.object.material.imageResource.imageData = level3_collisiondata;
+
+	wgMain.first_ent.addEntity("game/textures/stage_3_asset.png", new aLevel());
+    
+    // The player entity.
+    gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
+    gGlobals.player.action.pos.x = 896;
+    gGlobals.player.action.pos.y = 4096 - 1856;
+
+
+	var light = wgMain.first_ent.addEntity("game/textures/flower.png", 
+        new aLight({x: 3400 - 128, y: 4096 - 3936 + 192}));
+	light.object.pos = {x: 3400 - 100, y: 4096 - 3936 + 192 - 210};
+
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", 
+        new aLight({x: 2296, y: 4096 - 1536 + 152}));
+	light.object.pos = {x: 2296 - 100, y: 4096 - 1536 + 152 - 210}
+
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", 
+        new aLight({x: 424, y: 4096 - 1144 + 192}));
+	light.object.pos = {x: 424 - 100, y: 4096 - 1144 + 192 - 210}
+        
+    var ent = wgMain.first_ent.addEntity("game/textures/spider.png", new aSpider());
+	ent.object.pos.x = 800 + 256 + 128;
+	ent.object.pos.y = 4096 - 3630;
+    
+	wgMain.first_ent.addEntity("game/textures/stage_3_fog.png", new aLevel(), "light");
+
+	gGlobals.currlevelfunc = loadLevel3;
 	gGlobals.nextlevelfunc = loadLevel1;
 }
 
