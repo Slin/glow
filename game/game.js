@@ -72,11 +72,11 @@ function gameevent(ts)
 
 }
 
-
 function main()
 {
+	
+	
 	wgMain.initWebgine(gameevent);
-
 
 	wgMain.first_ent.addEntity("game/stage_1_basic.png", new aLevel());
 	gGlobals.background = wgMain.first_ent.next;
@@ -93,7 +93,6 @@ function main()
 	light = wgMain.first_ent.addEntity("game/player2.png", new aLight({x: 1732, y: 332}));
 	light.object.pos.x = 1700;
 	light.object.pos.y = 300;
-
 
 	var x = 0;
 	var y = 0;
