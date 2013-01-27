@@ -137,32 +137,24 @@ function loadLevel2()
 	wgMain.first_ent.addEntity("game/textures/stage_2_asset.png", new aLevel());
     
     // The player entity.
-    wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
-    gGlobals.player = wgMain.first_ent.next;
+    gGlobals.player = wgMain.first_ent.addEntity("game/textures/player.png", new aPlayer());
+    gGlobals.player.action.pos.x = 2048;
+    gGlobals.player.action.pos.y = 1612;
 
 
-	var light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 928, y: 680}));
-	light.object.pos.x = 800;
-	light.object.pos.y = 500;
+	var light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 2836, y: 3276}));
+	light.object.pos.x = 2736;
+	light.object.pos.y = 3060;
 
-	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 1828, y: 480}));
-	light.object.pos.x = 1700;
-	light.object.pos.y = 300;
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 796, y: 2484}));
+	light.object.pos.x = 696;
+	light.object.pos.y = 2268;
 
-
-	var x = 0;
-	var y = 0;
-	for(var i = 3; i < 8; i++)
-	{
-		x = Math.random()*3000+500;
-		y = Math.random()*3000+500;
-		light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: x+128, y: y+180}));
-		light.object.pos.x = x;
-		light.object.pos.y = y;
-	}
+	light = wgMain.first_ent.addEntity("game/textures/flower.png", new aLight({x: 3324, y: 940}));
+	light.object.pos.x = 3224;
+	light.object.pos.y = 724;
 
 	wgMain.first_ent.addEntity("game/textures/stage_2_fog.png", new aLevel());
-
 	wgMain.first_ent.addEntity("game/textures/flower.png", new aLevel(), "light");
 
 	gGlobals.currlevelfunc = loadLevel2;
