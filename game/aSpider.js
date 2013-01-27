@@ -38,11 +38,20 @@ aSpider.prototype.onUpdate = function (ts)
         var rot = this.ent.object.rot;
         var upVector = {x: -Math.sin(rot), y: Math.cos(rot) };
         var dot = upVector.x * direction.x + upVector.y * direction.y;
-        var reflectVector = 
+        var reflectVector = { x: 0, y:0 };
+        
+        // Check if the reflection faces in the wall and correct it.
+        if (dot > 0)
         {
-            x: direction.x - 2 * upVector.x * dot,
-            y: direction.y - 2 * upVector.y * dot
-        };
+            reflectVector = upVector;
+        }
+        else
+        {
+            reflectVector = {
+                x: direction.x - 2 * upVector.x * dot,
+                y: direction.y - 2 * upVector.y * dot
+            };
+        }
         
         wgCamera.follow.velocity.x = reflectVector.x * wgCamera.follow.ent.object.size.x * 10;
         wgCamera.follow.velocity.y = reflectVector.y * wgCamera.follow.ent.object.size.y * 10;
