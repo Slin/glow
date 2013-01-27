@@ -47,11 +47,11 @@ function aPlayer()
     this.controlsInverted = false;
     this.isAlive = true;
     this.exit = false;
-
-    this.PoisonDuration = 5000;
+    
+    this.PoisonDuration = 10000;
     this.poisonedTimeLeft = 0;
     this.PositiveColor = {r: 0.632, g: 1.0, b: 0.0};
-    this.NegativeColor = {r: 1.0, g: 0.0, b: 0.4};
+    this.NegativeColor = {r: 1.0, g: 0.0, b: 0.0};
     
 }
 
@@ -62,7 +62,7 @@ aPlayer.prototype.onInit = function()
     this.ent.object.size.x = 128;
     this.ent.object.size.y = 128;
     this.ent.createLight();
-    this.ent.light.color = this.PositiveColor;
+    this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
 	this.ent.object.material.initAtlas(4, 4, 1024, 1024, 1024, 1024);
 	this.ent.object.material.setAnimation(0, 7, 0.6, 1);
 
@@ -96,13 +96,8 @@ aPlayer.prototype.onUpdate = function(timeStep)
     {
         this.gotoExit(timeStep);
     }
+
     this.updateCameraPosition(timeStep);
-        
-    var isColliding = gGlobals.background.object.getPixel(
-        Math.floor(this.ent.object.pos.x + this.ent.object.size.x / 2), 
-        Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
-        );
-    
     this.updatePenalties(timeStep);
     
     this.ent.object.pos.x = this.pos.x;
@@ -189,13 +184,13 @@ aPlayer.prototype.updateCameraPosition = function(timeStep)
 // The player collided with the environment.
 aPlayer.prototype.die = function()
 {
-     if(this.isAlive == true)
+    if(this.isAlive == true)
     {
 		this.ent.object.material.setAnimation(8, 15, 0.2, 0);
         this.ent.light.range = 0;
         gGlobals.reload = true;
         this.isAlive = false;
-    }    this.ent.object.material.setAnimation(8, 15, 0.4, 0);
+    }    
 }
 
 // Updates player penalties like poison.
@@ -203,13 +198,20 @@ aPlayer.prototype.updatePenalties = function(timeStep)
 {
     if (this.poisonedTimeLeft > 0)
     {
-       this.poisonedTimeLeft -= timeStep;
+        this.poisonedTimeLeft -= timeStep;
+        
+        var progress = 1 - Math.max(0, Math.min(1, this.poisonedTimeLeft / this.PoisonDuration));
+            
+        this.ent.light.color.r = this.PositiveColor.r * progress + this.NegativeColor.r * (1 - progress);
+        this.ent.light.color.g = this.PositiveColor.r * progress + this.NegativeColor.g * (1 - progress);
+        this.ent.light.color.b = this.PositiveColor.r * progress + this.NegativeColor.b * (1 - progress);
     }
     
     if (this.poisonedTimeLeft <= 0)
     {
         this.poisonedTimeLeft = 0;
         this.controlsInverted = false;
+        this.ent.light.color = {r: 0.632, g: 1.0, b: 0.0};
     }
 }
 
@@ -233,41 +235,61 @@ aPlayer.prototype.updateCollision = function(timeStep)
             y: Math.floor(this.ent.object.pos.y + this.ent.object.size.y / 2)
             + (velocityNorm.y * (this.ent.object.size.y * 0.8))
         };
-    
-    // Get a point placed in front of the move direciton.
-    var pickPosition = 
-        {
-            x: origin.x + (velocityNorm.x * Math.min(length, this.ent.object.size.x * 5)) ,
-            y: origin.y + (velocityNorm.y * Math.min(length, this.ent.object.size.y * 5)) 
-        };     
-    
+
     var isColliding = gGlobals.background.object.getPixel(origin.x, origin.y);
     
     if (isColliding)
     {
         this.die();
+        return;
     }
-
-    var isRadarColliding = gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y);
-    
-    while (this.deltaRadarUpdate > this.RadarUpdateTime)
+                
+    // this.ent.light.pos.x = origin.x;
+    // this.ent.light.pos.y = origin.y;
+        
+           
+    if (this.deltaRadarUpdate > this.RadarUpdateTime)
     {
-        this.deltaRadarUpdate -= this.RadarUpdateTime;
-
-        if (isRadarColliding)
+        this.deltaRadarUpdate = 0;
+            
+        var pickDirections = [ {x: -0.71,y: -0.71}, {x: 0.71,y: -0.71}, {x: -0.71,y: 0.71}, {x: 0.71,y: 0.71} ];
+        var distanceStep = this.ent.object.size.x;
+        var distanceTests = 8;
+        var radarStrength = 0;
+        
+        for (var distanceCounter = 1; distanceCounter <= distanceTests; distanceCounter++)
         {
-            this.radarFeedback += 1;
+            for (var direction in pickDirections)
+            {
+                 // Get a point placed in front of the move direciton.
+                var pickPosition = 
+                {
+                    x: origin.x + pickDirections[direction].x * distanceStep * distanceCounter,
+                    y: origin.y + pickDirections[direction].y * distanceStep * distanceCounter 
+                };     
+                
+                if (gGlobals.background.object.getPixel(pickPosition.x, pickPosition.y))
+                {
+                    radarStrength = (1 - distanceCounter / (distanceTests-1));
+                    break;
+                }
+            }
+            
+            if (radarStrength != 0)
+            {
+                break;
+            }
         }
-
-        this.radarFeedback *= this.velocityReductionFactor;
+        
+        this.radarFeedbackNormalized = radarStrength;
     }
 
  //   this.ent.light.pos.x = pickPosition.x;
  //   this.ent.light.pos.y = pickPosition.y;
     
     this.radarFeedbackNormalized = Math.min(1, Math.max(0, this.radarFeedback / 20));
-        
+          
     //var easeRes = {r: 0.632, g: (1 - radarStrength), b: 0.0};
-    //console.log(easeRes);
+    //console.log(this.radarFeedbackNormalized);
     //this.ent.light.color = easeRes;
 }
