@@ -249,11 +249,15 @@ function loadLevel3()
 	wgMain.first_ent.addEntity("game/textures/stage_3_fog.png", new aLevel(), "light");
 
 	gGlobals.currlevelfunc = loadLevel3;
-	gGlobals.nextlevelfunc = loadLevel1;
-
-	alert("you win!!!111");
+	gGlobals.nextlevelfunc = finishgame;
 
 	gGlobals.currlevel = 3;
+}
+
+function finishgame()
+{
+	alert("you win!!!111");
+	loadLevel1();
 }
 
 function destroyLevel()
