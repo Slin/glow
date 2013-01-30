@@ -119,20 +119,25 @@ var wgShader = new function()
 				var fShaderQuellcode = "precision mediump float;"+
 					"uniform lowp sampler2D tex0;"+
 					"uniform lowp vec4 color;"+
-					"uniform mediump vec3 lightpos[8];"+
-					"uniform mediump vec3 lightcolor[8];"+
+					"uniform mediump vec3 lightpos[6];"+
+					"uniform mediump vec3 lightcolor[6];"+
 					"varying mediump vec2 texcoord0;"+
 					"varying mediump vec2 worldpos;"+
 					"void main()"+
 					"{"+
 					"	 gl_FragColor.rgb = pow(texture2D(tex0, texcoord0).rgb, vec3(2.2));"+
-					"	 vec3 light = vec3(0.0);"+
-					"	 float dist = 0.0;"+
-					"	 for(int i = 0; i < 8; i++)"+
-					"	 {"+
-					"    	dist = length(lightpos[i].xy-worldpos)/lightpos[i].z+0.5;"+
-					"    	light += lightcolor[i]/(dist*dist*dist*dist);"+
-					"	 }"+
+					"	 float dist = length(lightpos[0].xy-worldpos)/lightpos[0].z+0.5;"+
+					"    vec3 light = lightcolor[0]/(dist*dist*dist*dist);"+
+					"    dist = length(lightpos[1].xy-worldpos)/lightpos[1].z+0.5;"+
+					"    light += lightcolor[1]/(dist*dist*dist*dist);"+
+					"    dist = length(lightpos[2].xy-worldpos)/lightpos[2].z+0.5;"+
+					"    light += lightcolor[2]/(dist*dist*dist*dist);"+
+					"    dist = length(lightpos[3].xy-worldpos)/lightpos[3].z+0.5;"+
+					"    light += lightcolor[3]/(dist*dist*dist*dist);"+
+					"    dist = length(lightpos[4].xy-worldpos)/lightpos[4].z+0.5;"+
+					"    light += lightcolor[4]/(dist*dist*dist*dist);"+
+					"    dist = length(lightpos[5].xy-worldpos)/lightpos[5].z+0.5;"+
+					"    light += lightcolor[5]/(dist*dist*dist*dist);"+
 					"	 gl_FragColor.rgb *= light;"+
 					"	 gl_FragColor.rgb = pow(gl_FragColor.rgb, vec3(1.0/2.2));"+
 					"    gl_FragColor.a = 1.0;"+
